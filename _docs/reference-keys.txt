@@ -1,7 +1,0 @@
-eq:general
-eq:mlr
-eq:glm
-eq:gam
-eq:gamlss
-eq:garma
-GLM
