@@ -1,5 +1,6 @@
-book_filename: "bookdown-demo"
+book_filename: "Lecture-notes-1"
+output_dir: "docs"
 language:
   ui:
-    chapter_name: "Chapter "
+    chapter_name: "Lecture "
 delete_merged_file: true
