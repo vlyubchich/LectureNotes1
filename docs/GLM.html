@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Lecture 1 A short path to GLM and GAM | Lecture Notes</title>
+  <meta name="description" content="The output format for this file is bookdown::gitbook." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Lecture 1 A short path to GLM and GAM | Lecture Notes" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The output format for this file is bookdown::gitbook." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Lecture 1 A short path to GLM and GAM | Lecture Notes" />
+  
+  <meta name="twitter:description" content="The output format for this file is bookdown::gitbook." />
+  
+
+<meta name="author" content="Vyacheslav Lyubchich" />
+
+
+<meta name="date" content="2020-11-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a></li>
+<li class="chapter" data-level="1" data-path="GLM.html"><a href="GLM.html"><i class="fa fa-check"></i><b>1</b> A short path to GLM and GAM</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lecture Notes</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="GLM" class="section level1">
+<h1><span class="header-section-number">Lecture 1</span> A short path to GLM and GAM</h1>
+<p>This is a brief overview of popular regression models, based on <span class="citation">Lyubchich et al. (<a href="#ref-Lyubchich:etal:2019:wires" role="doc-biblioref">2019</a>)</span>.</p>
+<p>Consider a general regression framework:
+<span class="math display" id="eq:general">\[\begin{equation}
+    \tag{1.1}
+    \mathbf{Y} = \boldsymbol{\mu} + \boldsymbol{\epsilon},
+\end{equation}\]</span>
+where <span class="math inline">\(\mathbf{Y}\)</span> is an <span class="math inline">\(n\times1\)</span> column vector comprising observations of the variable of interest (response variable); <span class="math inline">\(\boldsymbol{\mu}\)</span> is an <span class="math inline">\(n\times1\)</span> column vector of expected values <span class="math inline">\(\mathrm{E}(Y_i) \equiv \mu_i\)</span>; <span class="math inline">\(\boldsymbol{\epsilon}\)</span> is an <span class="math inline">\(n\times1\)</span> column vector of zero-mean random deviations from the expected values, <span class="math inline">\(i = 1,\ldots,n\)</span>; and <span class="math inline">\(n\)</span> is the sample size.</p>
+<p>In case of a multiple linear regression, the mean response takes the form
+<span class="math display" id="eq:mlr">\[\begin{equation}
+    \tag{1.2}
+    \boldsymbol{\mu} = \mathbf{X}\boldsymbol{\beta},
+\end{equation}\]</span>
+where <span class="math inline">\(\mathbf{X}\)</span> is an <span class="math inline">\(n\times(d+1)\)</span> matrix with one column of 1’s for fitting an intercept in the model and the remaining <span class="math inline">\(d\)</span> columns for <span class="math inline">\(d\)</span> correlates (that is, explanatory variables) associated with the response variable; <span class="math inline">\(\boldsymbol{\beta}\)</span> is a <span class="math inline">\((d+1)\times 1\)</span> column vector of regression coefficients.</p>
+<p>The estimation of regression model <a href="GLM.html#eq:mlr">(1.2)</a> and further inference are based on a <em>number of assumptions</em> about the validity of the form of the model (i.e., linearity of relationships between <span class="math inline">\(Y\)</span> and each <span class="math inline">\(X\)</span> variable), linear independence of the variables in <span class="math inline">\(\mathbf{X}\)</span>, relatively equal importance of all the <span class="math inline">\(n\)</span> observations, as well as uncorrelatedness, homoscedasticity, and normality of errors <span class="math inline">\(\boldsymbol{\epsilon}\)</span> <span class="citation">(Chatterjee and Hadi <a href="#ref-Chatterjee:Hadi:2006" role="doc-biblioref">2006</a>)</span>. However, the assumption of normality is often violated, and model <a href="GLM.html#eq:mlr">(1.2)</a> in its classical formulation cannot be used in majority of applied problems.</p>
+<p>Generalized linear models (GLMs) help to overcome the violation of normality assumption by extending the applicability of model <a href="GLM.html#eq:mlr">(1.2)</a> to exponential-type distributions, such as Poisson, binomial, and gamma <span class="citation">(Wood <a href="#ref-Wood:2006book" role="doc-biblioref">2006</a>)</span>. In GLMs, distribution of <span class="math inline">\(Y_i\)</span> belongs to a family of exponential distributions, and a smooth monotonic link function <span class="math inline">\(g(\cdot)\)</span> is applied to transform the response variable:
+<span class="math display" id="eq:glm">\[\begin{equation}
+    \tag{1.3}
+    g(\boldsymbol{\mu}) = \mathbf{X}\boldsymbol{\beta}.
+\end{equation}\]</span>
+Canonical link functions are identity, ln, and inverse for normal, Poisson, and gamma distributions, respectively. After such transformation, however, model <a href="GLM.html#eq:glm">(1.3)</a> still assumes linear relationships between each of the original variables in <span class="math inline">\(\mathbf{X}\)</span> and the transformed response. Model <a href="GLM.html#eq:glm">(1.3)</a> is applicable when the link function successfully linearizes the relationship between the risk variable and a predictor. In other cases, especially if there are multiple predictors, additional work on re-specifying the model may be required. For example, relationships between the response variable and different predictors may require different linearizing transformations, the relationships may be non-monotonic, and many of them may be thresholded (i.e., the effect of a covariate <span class="math inline">\(X\)</span> is pronounced only when <span class="math inline">\(X\)</span> takes on values from a certain range, such as the effect of daily precipitation on sediment concentrations in the streams is not noticeable below certain precipitation threshold).</p>
+<p>One way we can capture highly non-linear relationships is by inclusion of additional transformed <span class="math inline">\(X\)</span>-variables, such as power transformed or thresholded variables (e.g., <span class="math inline">\(X_i^2\)</span>; <span class="math inline">\(\max(0, X_j - a)\)</span>). However, adding tightly linked variables into the design matrix <span class="math inline">\(\mathbf{X}\)</span> may introduce multicollinearity and affect the inference. An alternative way of modeling non-linearities is replacing the original variables with those individually transformed using smooth (nonparametric) functions, such as in a generalized additive model (GAM):
+<span class="math display" id="eq:gam">\[\begin{equation}
+    \tag{1.4}
+    g(\boldsymbol{\mu}) = \mathbf{X}^*\boldsymbol{\beta}^* + f_1(X_1) + f_2(X_2) + f_3(X_3,X_4) + \ldots,
+\end{equation}\]</span>
+where <span class="math inline">\(Y_i\)</span> still follows one of the exponential-family distributions; <span class="math inline">\(\mathbf{X}^*\)</span> and <span class="math inline">\(\boldsymbol{\beta}^*\)</span> are the remaining variables and associated coefficients in strictly parametric formulation; <span class="math inline">\(f(\cdot)\)</span> are smooth functions, often represented by regression splines <span class="citation">(Wood <a href="#ref-Wood:2006book" role="doc-biblioref">2006</a>)</span>. Model <a href="GLM.html#eq:gam">(1.4)</a> can easily deal with deviations from normality and can accommodate non-linearity and non-monotonicity of individual relationships, however, the model still fails to address the issue of remaining dependencies in the errors, e.g., see <span class="citation">Kohn, Schimek, and Smith (<a href="#ref-Kohn:etal:2000" role="doc-biblioref">2000</a>)</span>.</p>
+<p>An extension of model <a href="GLM.html#eq:gam">(1.4)</a> by <span class="citation">Stasinopoulos and Rigby (<a href="#ref-Stasinopoulos:Rigby:2007" role="doc-biblioref">2007</a>)</span> to <span class="math inline">\(k=1,2,3,4\)</span> parameters <span class="math inline">\(\boldsymbol{\theta}_k\)</span> of a distribution (not just the location parameter <span class="math inline">\(\mu_i\)</span>, but also scale <span class="math inline">\(\sigma_i\)</span>, and shape – skewness and kurtosis; can be generalized for <span class="math inline">\(k&gt;4\)</span>) allows fitting <span class="math inline">\(k\)</span> individual models
+<span class="math display" id="eq:gamlss">\[\begin{equation}
+   \tag{1.5}
+    g_k(\boldsymbol{\theta}_k) = h_k\left(\mathbf{X}_k,\boldsymbol{\beta}_k\right) + \sum_{j=1}^{J_k}h_{jk}(\mathbf{x}_{jk}),
+\end{equation}\]</span>
+where <span class="math inline">\(k=1\)</span> produces model for the mean; <span class="math inline">\(h_k(\cdot)\)</span> and <span class="math inline">\(h_{jk}(\cdot)\)</span> are non-linear functions; <span class="math inline">\(\boldsymbol{\beta}_k\)</span> is a parameter vector of length <span class="math inline">\(J_k\)</span>; <span class="math inline">\(\mathbf{X}_k\)</span> is an <span class="math inline">\(n\times J_k\)</span> design matrix; <span class="math inline">\(\mathbf{x}_{jk}\)</span> are vectors of length <span class="math inline">\(n\)</span>. The additive terms in this generalized additive model for location scale and shape (GAMLSS) provide a flexible framework to specify random effects and correlation structure as in mixed effects models <span class="citation">(Zuur et al. <a href="#ref-Zuur:etal:2009" role="doc-biblioref">2009</a>)</span>; see Table 3 by <span class="citation">Stasinopoulos and Rigby (<a href="#ref-Stasinopoulos:Rigby:2007" role="doc-biblioref">2007</a>)</span> for other possible specifications of the additive terms. Hence, models of the form <a href="GLM.html#eq:gamlss">(1.5)</a> may be a good choice for insurance problems, because such models accommodate non-normal distributions, possibly highly non-linear relationships, and spatiotemporal dependencies in the data.</p>
+<p>Another group of models, called generalized autoregressive moving average (GARMA), was developed by <span class="citation">Benjamin, Rigby, and Stasinopoulos (<a href="#ref-Benjamin:etal:2003" role="doc-biblioref">2003</a>)</span> as a combination of GLM <a href="GLM.html#eq:glm">(1.3)</a> with Box–Jenkins approach of modeling temporal dependence:
+<span class="math display" id="eq:garma">\[\begin{equation}
+    \tag{1.6}
+    g(\boldsymbol{\mu}_t) = \eta_t = \mathbf{X}_t\boldsymbol{\beta} + \sum_{j=1}^p{\phi_j \{ g(y_{t-j}) - \mathbf{X}_{t-j}\boldsymbol{\beta}\}} + \sum_{j=1}^q \theta_j \left\{ g(y_{t-j}) - \eta_{t-j}\right\},
+\end{equation}\]</span>
+where <span class="math inline">\(t=1,\ldots,n\)</span> is the time index; <span class="math inline">\(\phi_j\)</span>, <span class="math inline">\(j=1,\ldots,p\)</span>, are autoregressive coefficients; <span class="math inline">\(\theta_j\)</span>, <span class="math inline">\(j=1,\ldots,q\)</span>, are moving average coefficients, and <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> are the autoregressive and moving average orders, respectively. Model <a href="GLM.html#eq:garma">(1.6)</a> is efficient for dealing with individual time series.</p>
+<p>Notice that the issue of different reliability of individual measurements can be solved in models <a href="GLM.html#eq:mlr">(1.2)</a>–<a href="GLM.html#eq:garma">(1.6)</a> by introducing pre-defined weights in the estimation process. An automatic tuning of weights for improved model performance is possible with a number of boosting algorithms, such as AdaBoost.M1 <span class="citation">(Hastie, Tibshirani, and Friedman <a href="#ref-Hastie:etal:2009" role="doc-biblioref">2009</a>)</span>.</p>
+<p>Overall, model <a href="GLM.html#eq:gamlss">(1.5)</a> is a powerful and flexible choice for a variety of applied problems, when data exhibit complex spatiotemporal dependence and do not adhere to commonly used distributions, such as normal or Poisson.</p>
+<p>The challenges of using the above statistical models include the choice of predictors, their transformations, distribution of the response variable, and model specification, which can be attempted with a variety of criteria (for example, Akaike and Bayesian information criteria – AIC and BIC) ubiquitous in statistical literature. Machine learning approaches offer more flexibility by relaxing the assumptions about distributions and forms of relationships, and providing automated solutions for learning meta-features from large amounts of data. At the same time, the large number of tuning parameters that inhere in a machine learning (especially in deep learning) method and their ability of changing the output or extending the computing time dramatically put out a warning for cautious implementation and interpretation of those methods.</p>
+
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Benjamin:etal:2003">
+<p>Benjamin, M. A., R. A. Rigby, and D. M. Stasinopoulos. 2003. “Generalized Autoregressive Moving Average Models.” <em>Journal of the American Statistical Association</em> 98 (461): 214–23. <a href="https://doi.org/10.1198/016214503388619238">https://doi.org/10.1198/016214503388619238</a>.</p>
+</div>
+<div id="ref-Chatterjee:Hadi:2006">
+<p>Chatterjee, S., and A. S. Hadi. 2006. <em>Regression Analysis by Example</em>. Hoboken, New Jersey: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-Hastie:etal:2009">
+<p>Hastie, T. J., R. J. Tibshirani, and J. H. Friedman. 2009. <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em>. 2nd ed. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-84858-7">https://doi.org/10.1007/978-0-387-84858-7</a>.</p>
+</div>
+<div id="ref-Kohn:etal:2000">
+<p>Kohn, R., M. G. Schimek, and M. Smith. 2000. “Spline and Kernel Regression for Dependent Data.” In <em>Smoothing and Regression: Approaches, Computation, and Application</em>, edited by M. G. Schimek, 135–58. New York: John Wiley &amp; Sons, Inc. <a href="https://doi.org/10.1002/9781118150658.ch6">https://doi.org/10.1002/9781118150658.ch6</a>.</p>
+</div>
+<div id="ref-Lyubchich:etal:2019:wires">
+<p>Lyubchich, V., N. K. Newlands, A. Ghahari, T. Mahdi, and Y. R. Gel. 2019. “Insurance Risk Assessment in the Face of Climate Change: Integrating Data Science and Statistics.” <em>Wiley Interdisciplinary Reviews: Computational Statistics</em> 11: e1462. <a href="https://doi.org/10.1002/wics.1462">https://doi.org/10.1002/wics.1462</a>.</p>
+</div>
+<div id="ref-Stasinopoulos:Rigby:2007">
+<p>Stasinopoulos, D. M., and R. A. Rigby. 2007. “Generalized Additive Models for Location Scale and Shape (GAMLSS) in R.” <em>Journal of Statistical Software</em> 23 (7): 1–46.</p>
+</div>
+<div id="ref-Wood:2006book">
+<p>Wood, S. N. 2006. <em>Generalized Additive Models: An Introduction with R</em>. New York: Chapman; Hall/CRC.</p>
+</div>
+<div id="ref-Zuur:etal:2009">
+<p>Zuur, A., E. N. Ieno, N. J. Walker, A. A. Saveliev, and G. M. Smith. 2009. <em>Mixed Effects Models and Extensions in Ecology with R</em>. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-87458-6">https://doi.org/10.1007/978-0-387-87458-6</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-GLM.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Lecture-notes-1.pdf", "Lecture-notes-1.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

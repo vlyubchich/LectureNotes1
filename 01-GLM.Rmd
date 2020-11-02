@@ -1,0 +1,55 @@
+# A short path to GLM and GAM {#GLM}
+
+This is a brief overview of popular regression models, based on @Lyubchich:etal:2019:wires.
+
+Consider a general regression framework:
+\begin{equation}
+    (\#eq:general)
+    \mathbf{Y} = \boldsymbol{\mu} + \boldsymbol{\epsilon},
+\end{equation}
+where $\mathbf{Y}$ is an $n\times1$ column vector comprising observations of the variable of interest (response variable); $\boldsymbol{\mu}$ is an $n\times1$ column vector of expected values $\mathrm{E}(Y_i) \equiv \mu_i$; $\boldsymbol{\epsilon}$ is an $n\times1$ column vector of zero-mean random deviations from the expected values, $i = 1,\ldots,n$; and $n$ is the sample size.
+
+In case of a multiple linear regression, the mean response takes the form 
+\begin{equation}
+    (\#eq:mlr)
+    \boldsymbol{\mu} = \mathbf{X}\boldsymbol{\beta},
+\end{equation}
+where $\mathbf{X}$ is an $n\times(d+1)$ matrix with one column of 1's for fitting an intercept in the model and the remaining $d$ columns for $d$ correlates (that is, explanatory variables) associated with the response variable; $\boldsymbol{\beta}$ is a $(d+1)\times 1$ column vector of regression coefficients.
+
+The estimation of regression model \@ref(eq:mlr) and further inference are based on a _number of assumptions_ about the validity of the form of the model (i.e., linearity of relationships between $Y$ and each $X$ variable), linear independence of the variables in $\mathbf{X}$, relatively equal importance of all the $n$ observations, as well as uncorrelatedness, homoscedasticity, and normality of errors $\boldsymbol{\epsilon}$ [@Chatterjee:Hadi:2006]. However, the assumption of normality is often violated, and model \@ref(eq:mlr) in its classical formulation cannot be used in majority of applied problems.
+
+Generalized linear models (GLMs) help to overcome the violation of normality assumption by extending the applicability of model \@ref(eq:mlr) to exponential-type distributions, such as Poisson, binomial, and gamma [@Wood:2006book]. In GLMs, distribution of $Y_i$ belongs to a family of exponential distributions, and a smooth monotonic link function $g(\cdot)$ is applied to transform the response variable:
+\begin{equation}
+    (\#eq:glm)
+    g(\boldsymbol{\mu}) = \mathbf{X}\boldsymbol{\beta}.
+\end{equation}
+Canonical link functions are identity, ln, and inverse for normal, Poisson, and gamma distributions, respectively. After such transformation, however, model \@ref(eq:glm) still assumes linear relationships between each of the original variables in $\mathbf{X}$ and the transformed response. Model \@ref(eq:glm) is applicable when the link function successfully linearizes the relationship between the risk variable and a predictor. In other cases, especially if there are multiple predictors, additional work on re-specifying the model may be required. For example, relationships between the response variable and different predictors may require different linearizing transformations, the relationships may be non-monotonic, and many of them may be thresholded (i.e., the effect of a covariate $X$ is pronounced only when $X$ takes on values from a certain range, such as the effect of daily precipitation on sediment concentrations in the streams is not noticeable below certain precipitation threshold). 
+
+One way we can capture highly non-linear relationships is by inclusion of additional transformed $X$-variables, such as power transformed or thresholded variables (e.g., $X_i^2$; $\max(0, X_j - a)$). However, adding tightly linked variables into the design matrix $\mathbf{X}$ may introduce multicollinearity and affect the inference. An alternative way of modeling non-linearities is replacing the original variables with those individually transformed using smooth (nonparametric) functions, such as in a generalized additive model (GAM):
+\begin{equation}
+    (\#eq:gam)
+    g(\boldsymbol{\mu}) = \mathbf{X}^*\boldsymbol{\beta}^* + f_1(X_1) + f_2(X_2) + f_3(X_3,X_4) + \ldots,
+\end{equation}
+where $Y_i$ still follows one of the exponential-family distributions; $\mathbf{X}^*$ and $\boldsymbol{\beta}^*$ are the remaining variables and associated coefficients in strictly parametric formulation; $f(\cdot)$ are smooth functions, often represented by regression splines [@Wood:2006book]. Model \@ref(eq:gam) can easily deal with deviations from normality and can accommodate non-linearity and non-monotonicity of individual relationships, however, the model still fails to address the issue of remaining dependencies in the errors, e.g., see @Kohn:etal:2000.
+
+An extension of model \@ref(eq:gam) by @Stasinopoulos:Rigby:2007 to $k=1,2,3,4$ parameters $\boldsymbol{\theta}_k$ of a distribution (not just the location parameter $\mu_i$, but also scale $\sigma_i$, and shape -- skewness and kurtosis; can be generalized for $k>4$) allows fitting $k$ individual models 
+\begin{equation}
+   (\#eq:gamlss)
+    g_k(\boldsymbol{\theta}_k) = h_k\left(\mathbf{X}_k,\boldsymbol{\beta}_k\right) + \sum_{j=1}^{J_k}h_{jk}(\mathbf{x}_{jk}),
+\end{equation}
+where $k=1$ produces model for the mean; $h_k(\cdot)$ and $h_{jk}(\cdot)$ are non-linear functions; $\boldsymbol{\beta}_k$ is a parameter vector of length $J_k$; $\mathbf{X}_k$ is an $n\times J_k$ design matrix; $\mathbf{x}_{jk}$ are vectors of length $n$. The additive terms in this generalized additive model for location scale and shape (GAMLSS) provide a flexible framework to specify random effects and correlation structure as in mixed effects models [@Zuur:etal:2009]; see Table 3 by @Stasinopoulos:Rigby:2007 for other possible specifications of the additive terms. Hence, models of the form \@ref(eq:gamlss) may be a good choice for insurance problems, because such models accommodate non-normal distributions, possibly highly non-linear relationships, and spatiotemporal dependencies in the data.
+
+Another group of models, called generalized autoregressive moving average (GARMA), was developed by @Benjamin:etal:2003 as a combination of GLM \@ref(eq:glm) with Box--Jenkins approach of modeling temporal dependence:
+\begin{equation}
+    (\#eq:garma)
+    g(\boldsymbol{\mu}_t) = \eta_t = \mathbf{X}_t\boldsymbol{\beta} + \sum_{j=1}^p{\phi_j \{ g(y_{t-j}) - \mathbf{X}_{t-j}\boldsymbol{\beta}\}} + \sum_{j=1}^q \theta_j \left\{ g(y_{t-j}) - \eta_{t-j}\right\},
+\end{equation}
+where $t=1,\ldots,n$ is the time index; $\phi_j$, $j=1,\ldots,p$, are autoregressive coefficients; $\theta_j$, $j=1,\ldots,q$, are moving average coefficients, and $p$ and $q$ are the autoregressive and moving average orders, respectively. Model \@ref(eq:garma) is efficient for dealing with individual time series.
+
+Notice that the issue of different reliability of individual measurements can be solved in models \@ref(eq:mlr)--\@ref(eq:garma) by introducing pre-defined weights in the estimation process. An automatic tuning of weights for improved model performance is possible with a number of boosting algorithms, such as AdaBoost.M1 [@Hastie:etal:2009].
+
+Overall, model \@ref(eq:gamlss) is a powerful and flexible choice for a variety of applied problems, when data exhibit complex spatiotemporal dependence and do not adhere to commonly used distributions, such as normal or Poisson.
+
+The challenges of using the above statistical models include the choice of predictors, their transformations, distribution of the response variable, and model specification, which can be attempted with a variety of criteria (for example, Akaike and Bayesian information criteria -- AIC and BIC) ubiquitous in statistical literature. Machine learning approaches offer more flexibility by relaxing the assumptions about distributions and forms of relationships, and providing automated solutions for learning meta-features from large amounts of data. At the same time, the large number of tuning parameters that inhere in a machine learning (especially in deep learning) method and their ability of changing the output or extending the computing time dramatically put out a warning for cautious implementation and interpretation of those methods.
+
+
