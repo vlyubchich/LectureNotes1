@@ -171,7 +171,7 @@ Generalized linear models (GLMs) help to overcome the violation of normality ass
 A distribution belongs to the exponential family of distributions if its probability density function can be written as:
 
 \[f_{\theta}(y) = \exp[{y\theta - b(\theta)}/a(\phi) + c(y, \phi)],\]
-where \(b\), \(a\), and \(c\) are arbitrary functions, \(\phi\) and arbitrary \texttt{scale\textquotesingle{}\ parameter,\ and\ \$\textbackslash{}mu\$\ is\ the}canonical parameter' of the distribution. For normal distribution, \(\theta = \mu\) and \(a(\phi) = \phi= \sigma^2\) \citep{Wood:2006book}.
+where \(b\), \(a\), and \(c\) are arbitrary functions, \(\phi\) and arbitrary `scale' parameter, and \(\theta\) is the `canonical parameter' of the distribution. For normal distribution, \(\theta = \mu\) and \(a(\phi) = \phi= \sigma^2\) \citep{Wood:2006book}.
 
 Canonical link functions are identity, ln, and inverse for normal, Poisson, and gamma distributions, respectively. After such transformation, however, model \eqref{eq:glm} still assumes linear relationships between each of the original variables in \(\mathbf{X}\) and the transformed response. Model \eqref{eq:glm} is applicable when the link function successfully linearizes the relationship between the risk variable and a predictor. In other cases, especially if there are multiple predictors, additional work on re-specifying the model may be required. For example, relationships between the response variable and different predictors may require different linearizing transformations, the relationships may be non-monotonic, and many of them may be thresholded (i.e., the effect of a covariate \(X\) is pronounced only when \(X\) takes on values from a certain range, such as the effect of daily precipitation on sediment concentrations in the streams is not noticeable below certain precipitation threshold).
 
@@ -590,7 +590,7 @@ When plotting the fitted values, remember to back-transform
 
 The model is
 \[TP_i \sim Gamma\]
-\[\ln(\text{E}(TP_i)) = \beta_0 + f(TSS_i),\]
+\[\ln(\text{E}(TP_i)) = \beta_0 + f(TSS_i)\]
 
 Visualize the smooth term. For identifiability, sum of the values of each curve, at the observed covariate values, must be zero.
 
@@ -634,7 +634,7 @@ If family is not Gaussian (more specifically, if the link function is not identi
 \begin{Highlighting}[]
 \KeywordTok{plot}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\NormalTok{TSS, }\DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
 \NormalTok{pr <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(m5, }\DataTypeTok{newdata =}\NormalTok{ D, }\DataTypeTok{se.fit =} \OtherTok{TRUE}\NormalTok{)}
-\KeywordTok{with}\NormalTok{(D, }\KeywordTok{lines}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{sort}\NormalTok{(TSS), }\DataTypeTok{y =}\NormalTok{ pr}\OperatorTok{$}\NormalTok{fit[}\KeywordTok{order}\NormalTok{(TSS)],}
+\KeywordTok{with}\NormalTok{(D, }\KeywordTok{lines}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{sort}\NormalTok{(TSS), }\DataTypeTok{y =} \KeywordTok{exp}\NormalTok{(pr}\OperatorTok{$}\NormalTok{fit[}\KeywordTok{order}\NormalTok{(TSS)]),}
               \DataTypeTok{lwd =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
@@ -759,12 +759,23 @@ In this case, we model both parameters of the distribution:
 ## ******************************************************************
 \end{verbatim}
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\NormalTok{TSS, }\DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\NormalTok{pr <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(m6, }\DataTypeTok{type =} \StringTok{"response"}\NormalTok{)}
+\KeywordTok{with}\NormalTok{(D, }\KeywordTok{lines}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{sort}\NormalTok{(TSS), }\DataTypeTok{y =}\NormalTok{ pr[}\KeywordTok{order}\NormalTok{(TSS)],}
+              \DataTypeTok{lwd =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-27-1.pdf}
+
 \hypertarget{next-steps}{%
 \subsection{Next steps}\label{next-steps}}
 
 We have considered several models for the pair TP \textasciitilde{} TSS, without considering other variables yet. Need to carefully select an appropriate distribution family for modeling.
 
-When modeling with smoothers we should consider the issue of concurvity (an analogue of collinearity in linear models), when smooth transformations of predictors `'look alike.'' There are functions to check concurvity in R.
+When modeling with smoothers we should consider the issue of concurvity (an analogue of collinearity in linear models), when smooth transformations of predictors `look alike.' There are functions to check concurvity in R.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -808,7 +819,7 @@ When modeling with smoothers we should consider the issue of concurvity (an anal
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-27-1.pdf}
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-28-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -863,7 +874,7 @@ Variable selection in GAM is more tedious than in linear models. A general recom
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-30-1.pdf}
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-31-1.pdf}
 
   \bibliography{book.bib,packages.bib}
 

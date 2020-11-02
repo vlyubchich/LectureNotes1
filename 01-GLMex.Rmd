@@ -169,7 +169,7 @@ summary(m5)
 
 The model is
 $$TP_i \sim Gamma$$
-$$\ln(\text{E}(TP_i)) = \beta_0 + f(TSS_i),$$
+$$\ln(\text{E}(TP_i)) = \beta_0 + f(TSS_i)$$
 
 Visualize the smooth term. For identifiability, sum of the values of each curve, at the observed covariate values, must be zero.
 ```{r}
@@ -185,7 +185,7 @@ If family is not Gaussian (more specifically, if the link function is not identi
 ```{r}
 plot(TP ~ TSS, data = D, las = 1)
 pr <- predict(m5, newdata = D, se.fit = TRUE)
-with(D, lines(x = sort(TSS), y = pr$fit[order(TSS)],
+with(D, lines(x = sort(TSS), y = exp(pr$fit[order(TSS)]),
               lwd = 2, col = "blue"))
 ```
 
@@ -223,11 +223,21 @@ term.plot(m6, las = 1, se = TRUE, ylim = "common")
 plot(m6)
 ```
 
+
+```{r}
+plot(TP ~ TSS, data = D, las = 1)
+pr <- predict(m6, type = "response")
+with(D, lines(x = sort(TSS), y = pr[order(TSS)],
+              lwd = 2, col = "blue"))
+```
+
+
+
 ### Next steps
 
 We have considered several models for the pair TP ~ TSS, without considering other variables yet. Need to carefully select an appropriate distribution family for modeling. 
 
-When modeling with smoothers we should consider the issue of concurvity (an analogue of collinearity in linear models), when smooth transformations of predictors ''look alike.'' There are functions to check concurvity in R. 
+When modeling with smoothers we should consider the issue of concurvity (an analogue of collinearity in linear models), when smooth transformations of predictors 'look alike.' There are functions to check concurvity in R. 
 ```{r}
 m7 <- gam(TP ~ s(TSS) + s(SALINITY) + s(TN) + s(WTEMP), 
           data = D, family = Gamma(link = log))
