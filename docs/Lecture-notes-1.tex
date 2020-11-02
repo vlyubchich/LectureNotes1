@@ -41,6 +41,46 @@
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs}
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -80,7 +120,7 @@
 
 \title{Lecture Notes}
 \author{Vyacheslav Lyubchich}
-\date{2020-11-01}
+\date{2020-11-02}
 
 \begin{document}
 \maketitle
@@ -123,11 +163,16 @@ The estimation of regression model \eqref{eq:mlr} and further inference are base
 \hypertarget{generalized-linear-model-glm}{%
 \subsection{Generalized linear model (GLM)}\label{generalized-linear-model-glm}}
 
-Generalized linear models (GLMs) help to overcome the violation of normality assumption by extending the applicability of model \eqref{eq:mlr} to exponential-type distributions, such as Poisson, binomial, and gamma \citep{Wood:2006book}. In GLMs, distribution of \(Y_i\) belongs to a family of exponential distributions, and a smooth monotonic link function \(g(\cdot)\) is applied to transform the response variable:
+Generalized linear models (GLMs) help to overcome the violation of normality assumption by extending the applicability of model \eqref{eq:mlr} to exponential-type distributions, such as Poisson, binomial, and gamma \citep{Wood:2006book}. In GLMs, distribution of \(Y_i\) belongs to a family of \emph{exponential distributions}, and a smooth monotonic link function \(g(\cdot)\) is applied to transform the response variable:
 \begin{equation}
     \label{eq:glm}
     g(\boldsymbol{\mu}) = \mathbf{X}\boldsymbol{\beta}.
 \end{equation}
+A distribution belongs to the exponential family of distributions if its probability density function can be written as:
+
+\[f_{\theta}(y) = \exp[{y\theta - b(\theta)}/a(\phi) + c(y, \phi)],\]
+where \(b\), \(a\), and \(c\) are arbitrary functions, \(\phi\) and arbitrary \texttt{scale\textquotesingle{}\ parameter,\ and\ \$\textbackslash{}mu\$\ is\ the}canonical parameter' of the distribution. For normal distribution, \(\theta = \mu\) and \(a(\phi) = \phi= \sigma^2\) \citep{Wood:2006book}.
+
 Canonical link functions are identity, ln, and inverse for normal, Poisson, and gamma distributions, respectively. After such transformation, however, model \eqref{eq:glm} still assumes linear relationships between each of the original variables in \(\mathbf{X}\) and the transformed response. Model \eqref{eq:glm} is applicable when the link function successfully linearizes the relationship between the risk variable and a predictor. In other cases, especially if there are multiple predictors, additional work on re-specifying the model may be required. For example, relationships between the response variable and different predictors may require different linearizing transformations, the relationships may be non-monotonic, and many of them may be thresholded (i.e., the effect of a covariate \(X\) is pronounced only when \(X\) takes on values from a certain range, such as the effect of daily precipitation on sediment concentrations in the streams is not noticeable below certain precipitation threshold).
 
 \hypertarget{generalized-additive-model-gam}{%
@@ -172,7 +217,653 @@ The challenges of using the above statistical models include the choice of predi
 \hypertarget{data-example}{%
 \section{Data example}\label{data-example}}
 
-sdfsdf
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(dplyr)}
+\KeywordTok{library}\NormalTok{(GGally)}
+\KeywordTok{library}\NormalTok{(plotly)}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Select average water quality measurements in Chesapeake Bay for December 2010:
+
+\begin{itemize}
+\tightlist
+\item
+  Station: station at which the measurements were taken. There are 133 stations in the data file; at this time, we disregard the spatial patterns;
+\item
+  DO: concentration of dissolved oxygen;
+\item
+  CHLA: concentration of chlorophyll-a;
+\item
+  SALINITY: water salinity;
+\item
+  WTEMP: water temperature;
+\item
+  TSS: concentration of total suspended solids;
+\item
+  TN: concentration of total nitrogen;
+\item
+  TP: concentration of total phosphorus.
+\end{itemize}
+
+Then try modeling TP with different methods.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{D <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"./data/CBmonthly.csv"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{    }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(., Year }\OperatorTok{==}\StringTok{ }\DecValTok{2010} \OperatorTok{&}\StringTok{ }\NormalTok{Month }\OperatorTok{==}\StringTok{ }\DecValTok{12}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{    }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(Station, DO, CHLA, SALINITY, WTEMP, TSS, TN, TP)}
+\KeywordTok{str}\NormalTok{(D)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    133 obs. of  8 variables:
+##  $ Station : chr  "CB1.1" "CB2.1" "CB2.2" "CB3.1" ...
+##  $ DO      : num  14.2 14.2 13.4 12.7 12.2 ...
+##  $ CHLA    : num  1.78 1.78 1.07 1.87 2.56 ...
+##  $ SALINITY: num  0 0 0.9 3.12 5.63 ...
+##  $ WTEMP   : num  0.1 0.1 0.6 0.9 1.6 ...
+##  $ TSS     : num  15.6 15.6 16.2 18.4 12 ...
+##  $ TN      : num  1.66 1.66 1.55 1.25 1.12 ...
+##  $ TP      : num  0.045 0.045 0.0403 0.0436 0.036 ...
+\end{verbatim}
+
+Plot data
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p <-}\StringTok{ }\KeywordTok{ggpairs}\NormalTok{(D[,}\OperatorTok{-}\DecValTok{1}\NormalTok{])}
+\NormalTok{p }\CommentTok{#ggplotly(p)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\hypertarget{simple-linear-regression}{%
+\subsection{Simple linear regression}\label{simple-linear-regression}}
+
+For the simplest model, select a variable with the strongest correlation with TP: it is TSS.
+Our simple linear regression model is
+
+\[TP_i = \beta_0 + \beta_1 TSS_i + \epsilon_i,\]
+where \(i = 1,\ldots,n\) (\(n =\) 133 is the sample size).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\NormalTok{TSS, }\DataTypeTok{data =}\NormalTok{ D)}
+\KeywordTok{summary}\NormalTok{(m1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = TP ~ TSS, data = D)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.041079 -0.010033 -0.001276  0.006457  0.043831 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 1.860e-02  1.801e-03   10.33   <2e-16 ***
+## TSS         1.755e-03  9.059e-05   19.37   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.01375 on 131 degrees of freedom
+## Multiple R-squared:  0.7412, Adjusted R-squared:  0.7393 
+## F-statistic: 375.3 on 1 and 131 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(m1, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\NormalTok{TSS, }\DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(m1, }\DataTypeTok{lwd =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+The model clearly has problems.
+
+\hypertarget{polynomial-regression}{%
+\subsection{Polynomial regression}\label{polynomial-regression}}
+
+Without modifying the response variable, apply a polynomial transformation to the explanatory variable, for example quadratic (informed by the plot). Our polynomial regression model is
+
+\[TP_i = \beta_0 + \beta_1 TSS_i + \beta_2 TSS^2_i + \epsilon_i,\]
+Use function poly to create orthogonal polynomials:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m2 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\KeywordTok{poly}\NormalTok{(TSS, }\DecValTok{2}\NormalTok{), }\DataTypeTok{data =}\NormalTok{ D)}
+\KeywordTok{summary}\NormalTok{(m2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = TP ~ poly(TSS, 2), data = D)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.021327 -0.010286 -0.000931  0.005123  0.040019 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)    0.044747   0.001156   38.72  < 2e-16 ***
+## poly(TSS, 2)1  0.266399   0.013327   19.99  < 2e-16 ***
+## poly(TSS, 2)2 -0.041043   0.013327   -3.08  0.00253 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.01333 on 130 degrees of freedom
+## Multiple R-squared:  0.7588, Adjusted R-squared:  0.7551 
+## F-statistic: 204.5 on 2 and 130 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(m2, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\NormalTok{TSS, }\DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\NormalTok{pr <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(m2, }\DataTypeTok{newdata =}\NormalTok{ D, }\DataTypeTok{se.fit =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{with}\NormalTok{(D, }\KeywordTok{lines}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{sort}\NormalTok{(TSS), }\DataTypeTok{y =}\NormalTok{ pr}\OperatorTok{$}\NormalTok{fit[}\KeywordTok{order}\NormalTok{(TSS)],}
+              \DataTypeTok{lwd =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\hypertarget{power-transformation}{%
+\subsection{Power transformation}\label{power-transformation}}
+
+Apply Box--Cox method to select a power transformation for the response variable:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(MASS)}
+\KeywordTok{boxcox}\NormalTok{(m1)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+Check linearity after applying the transformation
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{sqrt}\NormalTok{(TP) }\OperatorTok{~}\StringTok{ }\NormalTok{TSS, }\DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+Hence, the model looks like
+
+\[\sqrt{TP_i} = \beta_0 + \beta_1 TSS_i + \epsilon_i\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m3 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(}\KeywordTok{sqrt}\NormalTok{(TP) }\OperatorTok{~}\StringTok{ }\NormalTok{TSS, }\DataTypeTok{data =}\NormalTok{ D)}
+\KeywordTok{summary}\NormalTok{(m3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = sqrt(TP) ~ TSS, data = D)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.090920 -0.017810 -0.002486  0.018862  0.082065 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 0.1470414  0.0042308   34.76   <2e-16 ***
+## TSS         0.0037651  0.0002128   17.69   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.03231 on 131 degrees of freedom
+## Multiple R-squared:  0.7049, Adjusted R-squared:  0.7027 
+## F-statistic:   313 on 1 and 131 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(m3, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+When plotting the fitted values, remember to back-transform
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\NormalTok{TSS, }\DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\NormalTok{pr <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(m3, }\DataTypeTok{newdata =}\NormalTok{ D, }\DataTypeTok{se.fit =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{with}\NormalTok{(D, }\KeywordTok{lines}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{sort}\NormalTok{(TSS), }\DataTypeTok{y =}\NormalTok{ pr}\OperatorTok{$}\NormalTok{fit[}\KeywordTok{order}\NormalTok{(TSS)]}\OperatorTok{^}\DecValTok{2}\NormalTok{,}
+              \DataTypeTok{lwd =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\hypertarget{generalized-linear-model-glm-1}{%
+\subsection{Generalized linear model (GLM)}\label{generalized-linear-model-glm-1}}
+
+Review the distribution of the response variable and select an appropriate one
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{?family}
+\end{Highlighting}
+\end{Shaded}
+
+Check linearity after applying the transformation (link function for the selected distribution)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{log}\NormalTok{(TP) }\OperatorTok{~}\StringTok{ }\NormalTok{TSS, }\DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m4 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\NormalTok{TSS, }\DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{family =} \KeywordTok{Gamma}\NormalTok{(}\DataTypeTok{link =} \StringTok{"log"}\NormalTok{))}
+\KeywordTok{summary}\NormalTok{(m4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = TP ~ TSS, family = Gamma(link = "log"), data = D)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -0.77706  -0.20733  -0.01593   0.17525   0.80973  
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -3.71136    0.04453  -83.34   <2e-16 ***
+## TSS          0.03359    0.00224   15.00   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for Gamma family taken to be 0.1156311)
+## 
+##     Null deviance: 42.986  on 132  degrees of freedom
+## Residual deviance: 15.270  on 131  degrees of freedom
+## AIC: -771.27
+## 
+## Number of Fisher Scoring iterations: 5
+\end{verbatim}
+
+Hence, the model is
+\[TP_i \sim Gamma\]
+\[\ln(\text{E}(TP_i)) = \beta_0 + \beta_1 TSS_i\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(m4, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+When plotting the fitted values, remember to back-transform
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\NormalTok{TSS, }\DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\NormalTok{pr <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(m4, }\DataTypeTok{newdata =}\NormalTok{ D, }\DataTypeTok{se.fit =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{with}\NormalTok{(D, }\KeywordTok{lines}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{sort}\NormalTok{(TSS), }\DataTypeTok{y =} \KeywordTok{exp}\NormalTok{(pr}\OperatorTok{$}\NormalTok{fit[}\KeywordTok{order}\NormalTok{(TSS)]),}
+              \DataTypeTok{lwd =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\hypertarget{generalized-additive-model-gam-1}{%
+\subsection{Generalized additive model (GAM)}\label{generalized-additive-model-gam-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(mgcv)}
+\NormalTok{m5 <-}\StringTok{ }\KeywordTok{gam}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\KeywordTok{s}\NormalTok{(TSS), }\DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{family =} \KeywordTok{Gamma}\NormalTok{(}\DataTypeTok{link =}\NormalTok{ log))}
+\KeywordTok{summary}\NormalTok{(m5)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: Gamma 
+## Link function: log 
+## 
+## Formula:
+## TP ~ s(TSS)
+## 
+## Parametric coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -3.22297    0.02675  -120.5   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df     F p-value    
+## s(TSS) 5.597  6.614 43.63  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## R-sq.(adj) =  0.789   Deviance explained = 71.9%
+## GCV = 0.10045  Scale est. = 0.095193  n = 133
+\end{verbatim}
+
+The model is
+\[TP_i \sim Gamma\]
+\[\ln(\text{E}(TP_i)) = \beta_0 + f(TSS_i),\]
+
+Visualize the smooth term. For identifiability, sum of the values of each curve, at the observed covariate values, must be zero.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(m5, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+Diagnostics
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{gam.check}\NormalTok{(m5)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+\begin{verbatim}
+## 
+## Method: GCV   Optimizer: outer newton
+## full convergence after 3 iterations.
+## Gradient range [1.729043e-10,1.729043e-10]
+## (score 0.1004541 & scale 0.09519291).
+## Hessian positive definite, eigenvalue range [0.0008269258,0.0008269258].
+## Model rank =  10 / 10 
+## 
+## Basis dimension (k) checking results. Low p-value (k-index<1) may
+## indicate that k is too low, especially if edf is close to k'.
+## 
+##         k' edf k-index p-value
+## s(TSS) 9.0 5.6    0.91    0.18
+\end{verbatim}
+
+If family is not Gaussian (more specifically, if the link function is not identity), remember to back-transform
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\NormalTok{TSS, }\DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{)}
+\NormalTok{pr <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(m5, }\DataTypeTok{newdata =}\NormalTok{ D, }\DataTypeTok{se.fit =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{with}\NormalTok{(D, }\KeywordTok{lines}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{sort}\NormalTok{(TSS), }\DataTypeTok{y =}\NormalTok{ pr}\OperatorTok{$}\NormalTok{fit[}\KeywordTok{order}\NormalTok{(TSS)],}
+              \DataTypeTok{lwd =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-23-1.pdf}
+
+\hypertarget{generalized-additive-model-for-location-scale-and-shape-gamlss-1}{%
+\subsection{Generalized additive model for location scale and shape (GAMLSS)}\label{generalized-additive-model-for-location-scale-and-shape-gamlss-1}}
+
+Note that variance of residuals slightly increases with TSS. We can
+
+\begin{itemize}
+\tightlist
+\item
+  use generalized least squares (GLS) to transform the variables and stabilize the variance, or
+\item
+  fit a separate model for variance, similar to the model for the mean.
+\end{itemize}
+
+Use the second approach in GAMLSS:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(gamlss)}
+\NormalTok{m6 <-}\StringTok{ }\KeywordTok{gamlss}\NormalTok{(}
+\NormalTok{  TP }\OperatorTok{~}\StringTok{ }\KeywordTok{pb}\NormalTok{(TSS)}
+\NormalTok{  ,}\DataTypeTok{sigma.formula =} \OperatorTok{~}\NormalTok{TSS}
+\NormalTok{  ,}\DataTypeTok{family =}\NormalTok{ GA}
+\NormalTok{  ,}\DataTypeTok{data =}\NormalTok{ D}
+  \CommentTok{#,control = gamlss.control(n.cyc = 100, c.crit = 0.9)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## GAMLSS-RS iteration 1: Global Deviance = -821.986 
+## GAMLSS-RS iteration 2: Global Deviance = -825.3166 
+## GAMLSS-RS iteration 3: Global Deviance = -825.8326 
+## GAMLSS-RS iteration 4: Global Deviance = -825.8686 
+## GAMLSS-RS iteration 5: Global Deviance = -825.8733 
+## GAMLSS-RS iteration 6: Global Deviance = -825.874
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(m6)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ******************************************************************
+## Family:  c("GA", "Gamma") 
+## 
+## Call:  gamlss(formula = TP ~ pb(TSS), sigma.formula = ~TSS,  
+##     family = GA, data = D) 
+## 
+## Fitting method: RS() 
+## 
+## ------------------------------------------------------------------
+## Mu link function:  log
+## Mu Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -3.70262    0.03757  -98.56   <2e-16 ***
+## pb(TSS)      0.03220    0.00112   28.75   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## ------------------------------------------------------------------
+## Sigma link function:  log
+## Sigma Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -0.921346   0.092819  -9.926  < 2e-16 ***
+## TSS         -0.023435   0.004775  -4.908 2.82e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## ------------------------------------------------------------------
+## NOTE: Additive smoothing terms exist in the formulas: 
+##  i) Std. Error for smoothers are for the linear effect only. 
+## ii) Std. Error for the linear terms maybe are not accurate. 
+## ------------------------------------------------------------------
+## No. of observations in the fit:  133 
+## Degrees of Freedom for the fit:  8.420713
+##       Residual Deg. of Freedom:  124.5793 
+##                       at cycle:  6 
+##  
+## Global Deviance:     -825.874 
+##             AIC:     -809.0326 
+##             SBC:     -784.6938 
+## ******************************************************************
+\end{verbatim}
+
+In this case, we model both parameters of the distribution:
+\[TP_i \sim Gamma(\mu_i, \sigma_i)\]
+\[\ln(\text{E}(TP_i)) = \ln(\mu_i) =  \beta_0 + f(TSS_i)\]
+\[\ln(\sigma_i) = c_0 + c_1TSS_i\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{term.plot}\NormalTok{(m6, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{, }\DataTypeTok{se =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{ylim =} \StringTok{"common"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-25-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(m6)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-26-1.pdf}
+
+\begin{verbatim}
+## ******************************************************************
+##        Summary of the Quantile Residuals
+##                            mean   =  -0.0008679401 
+##                        variance   =  1.007634 
+##                coef. of skewness  =  0.3308549 
+##                coef. of kurtosis  =  2.612453 
+## Filliben correlation coefficient  =  0.988048 
+## ******************************************************************
+\end{verbatim}
+
+\hypertarget{next-steps}{%
+\subsection{Next steps}\label{next-steps}}
+
+We have considered several models for the pair TP \textasciitilde{} TSS, without considering other variables yet. Need to carefully select an appropriate distribution family for modeling.
+
+When modeling with smoothers we should consider the issue of concurvity (an analogue of collinearity in linear models), when smooth transformations of predictors `'look alike.'' There are functions to check concurvity in R.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m7 <-}\StringTok{ }\KeywordTok{gam}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\KeywordTok{s}\NormalTok{(TSS) }\OperatorTok{+}\StringTok{ }\KeywordTok{s}\NormalTok{(SALINITY) }\OperatorTok{+}\StringTok{ }\KeywordTok{s}\NormalTok{(TN) }\OperatorTok{+}\StringTok{ }\KeywordTok{s}\NormalTok{(WTEMP), }
+          \DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{family =} \KeywordTok{Gamma}\NormalTok{(}\DataTypeTok{link =}\NormalTok{ log))}
+\KeywordTok{summary}\NormalTok{(m7)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: Gamma 
+## Link function: log 
+## 
+## Formula:
+## TP ~ s(TSS) + s(SALINITY) + s(TN) + s(WTEMP)
+## 
+## Parametric coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -3.25604    0.01556  -209.2   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Approximate significance of smooth terms:
+##               edf Ref.df      F  p-value    
+## s(TSS)      6.595  7.617 29.353  < 2e-16 ***
+## s(SALINITY) 6.923  7.966 10.892 4.79e-12 ***
+## s(TN)       1.000  1.000  0.519    0.473    
+## s(WTEMP)    7.342  8.298  7.683 6.73e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## R-sq.(adj) =  0.886   Deviance explained = 92.4%
+## GCV = 0.035873  Scale est. = 0.032206  n = 133
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(m7)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-27-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{concurvity}\NormalTok{(m7)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                  para    s(TSS) s(SALINITY)     s(TN)  s(WTEMP)
+## worst    2.255338e-24 0.8492033   0.9328362 0.9342809 0.8218917
+## observed 2.255338e-24 0.6554349   0.9203188 0.7103660 0.3510102
+## estimate 2.255338e-24 0.5150905   0.8471733 0.5209155 0.7415149
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{concurvity}\NormalTok{(m7, }\DataTypeTok{full =} \OtherTok{FALSE}\NormalTok{)}\OperatorTok{$}\NormalTok{estimate}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                     para       s(TSS)  s(SALINITY)        s(TN)     s(WTEMP)
+## para        1.000000e+00 1.696166e-27 1.054164e-28 2.357477e-28 6.180660e-28
+## s(TSS)      7.907947e-25 1.000000e+00 4.507004e-01 2.590425e-01 1.895382e-01
+## s(SALINITY) 6.370609e-26 2.829094e-01 1.000000e+00 3.382813e-01 6.017203e-01
+## s(TN)       1.318787e-25 2.477700e-01 7.128446e-01 1.000000e+00 5.096872e-01
+## s(WTEMP)    4.200428e-25 2.441318e-01 4.495728e-01 2.178949e-01 1.000000e+00
+\end{verbatim}
+
+Variable selection in GAM is more tedious than in linear models. A general recommendation for GAM is to do forward-selection: include only relevant meaningful variables, do not just throw everything into the model. Note that the model can hold a mix of smoothed and non-smoothed terms. For example, remove TN, do not smooth SALINITY:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m8 <-}\StringTok{ }\KeywordTok{gam}\NormalTok{(TP }\OperatorTok{~}\StringTok{ }\KeywordTok{s}\NormalTok{(TSS) }\OperatorTok{+}\StringTok{ }\NormalTok{SALINITY }\OperatorTok{+}\StringTok{ }\KeywordTok{s}\NormalTok{(WTEMP), }
+          \DataTypeTok{data =}\NormalTok{ D, }\DataTypeTok{family =} \KeywordTok{Gamma}\NormalTok{(}\DataTypeTok{link =}\NormalTok{ log))}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(m8)}
+\KeywordTok{concurvity}\NormalTok{(m8, }\DataTypeTok{full =} \OtherTok{FALSE}\NormalTok{)}\OperatorTok{$}\NormalTok{estimate}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                  para       s(TSS)     s(WTEMP)
+## para     1.000000e+00 1.696166e-27 6.180660e-28
+## s(TSS)   7.944119e-25 1.000000e+00 1.895382e-01
+## s(WTEMP) 4.226487e-25 2.441318e-01 1.000000e+00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#gam.check(m8)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Lecture-notes-1_files/figure-latex/unnamed-chunk-30-1.pdf}
 
   \bibliography{book.bib,packages.bib}
 

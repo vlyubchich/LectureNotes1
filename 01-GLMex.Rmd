@@ -1,3 +1,255 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 ## Data example
 
-sdfsdf
+```{r}
+library(dplyr)
+library(GGally)
+library(plotly)
+set.seed(123)
+```
+
+Select average water quality measurements in Chesapeake Bay for December 2010:
+
+- Station: station at which the measurements were taken. There are 133 stations in the data file; at this time, we disregard the spatial patterns;
+- DO: concentration of dissolved oxygen;
+- CHLA: concentration of chlorophyll-a;
+- SALINITY: water salinity;
+- WTEMP: water temperature;
+- TSS: concentration of total suspended solids;
+- TN: concentration of total nitrogen;
+- TP: concentration of total phosphorus.
+
+Then try modeling TP with different methods.
+```{r}
+D <- read.csv("./data/CBmonthly.csv") %>% 
+    dplyr::filter(., Year == 2010 & Month == 12) %>% 
+    dplyr::select(Station, DO, CHLA, SALINITY, WTEMP, TSS, TN, TP)
+str(D)
+```
+
+Plot data
+```{r}
+p <- ggpairs(D[,-1])
+p #ggplotly(p)
+```
+
+### Simple linear regression
+
+For the simplest model, select a variable with the strongest correlation with TP: it is TSS.
+Our simple linear regression model is
+
+$$TP_i = \beta_0 + \beta_1 TSS_i + \epsilon_i,$$
+where $i = 1,\ldots,n$ ($n =$ `r nrow(D)` is the sample size).
+
+```{r}
+m1 <- lm(TP ~ TSS, data = D)
+summary(m1)
+```
+
+
+```{r}
+par(mfrow = c(2, 2))
+plot(m1, las = 1)
+```
+
+```{r}
+plot(TP ~ TSS, data = D, las = 1)
+abline(m1, lwd = 2, col = "blue")
+```
+
+The model clearly has problems.
+
+### Polynomial regression
+
+Without modifying the response variable, apply a polynomial transformation to the explanatory variable, for example quadratic (informed by the plot). Our polynomial regression model is
+
+$$TP_i = \beta_0 + \beta_1 TSS_i + \beta_2 TSS^2_i + \epsilon_i,$$
+Use function poly to create orthogonal polynomials:
+```{r}
+m2 <- lm(TP ~ poly(TSS, 2), data = D)
+summary(m2)
+```
+
+
+```{r}
+par(mfrow = c(2, 2))
+plot(m2, las = 1)
+```
+
+```{r}
+plot(TP ~ TSS, data = D, las = 1)
+pr <- predict(m2, newdata = D, se.fit = TRUE)
+with(D, lines(x = sort(TSS), y = pr$fit[order(TSS)],
+              lwd = 2, col = "blue"))
+```
+
+
+### Power transformation 
+
+Apply Box--Cox method to select a power transformation for the response variable:
+```{r}
+library(MASS)
+boxcox(m1)
+```
+
+Check linearity after applying the transformation
+```{r}
+plot(sqrt(TP) ~ TSS, data = D, las = 1)
+```
+
+Hence, the model looks like
+
+$$\sqrt{TP_i} = \beta_0 + \beta_1 TSS_i + \epsilon_i$$
+
+```{r}
+m3 <- lm(sqrt(TP) ~ TSS, data = D)
+summary(m3)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(m3, las = 1)
+```
+
+When plotting the fitted values, remember to back-transform
+```{r}
+plot(TP ~ TSS, data = D, las = 1)
+pr <- predict(m3, newdata = D, se.fit = TRUE)
+with(D, lines(x = sort(TSS), y = pr$fit[order(TSS)]^2,
+              lwd = 2, col = "blue"))
+```
+
+### Generalized linear model (GLM)
+
+Review the distribution of the response variable and select an appropriate one
+```{r eval=FALSE}
+?family
+```
+
+Check linearity after applying the transformation (link function for the selected distribution)
+```{r}
+plot(log(TP) ~ TSS, data = D, las = 1)
+```
+
+
+```{r}
+m4 <- glm(TP ~ TSS, data = D, family = Gamma(link = "log"))
+summary(m4)
+```
+
+Hence, the model is
+$$TP_i \sim Gamma$$
+$$\ln(\text{E}(TP_i)) = \beta_0 + \beta_1 TSS_i$$
+
+
+```{r}
+par(mfrow = c(2, 2))
+plot(m4, las = 1)
+```
+
+When plotting the fitted values, remember to back-transform
+```{r}
+plot(TP ~ TSS, data = D, las = 1)
+pr <- predict(m4, newdata = D, se.fit = TRUE)
+with(D, lines(x = sort(TSS), y = exp(pr$fit[order(TSS)]),
+              lwd = 2, col = "blue"))
+```
+
+### Generalized additive model (GAM)
+
+```{r}
+library(mgcv)
+m5 <- gam(TP ~ s(TSS), data = D, family = Gamma(link = log))
+summary(m5)
+```
+
+The model is
+$$TP_i \sim Gamma$$
+$$\ln(\text{E}(TP_i)) = \beta_0 + f(TSS_i),$$
+
+Visualize the smooth term. For identifiability, sum of the values of each curve, at the observed covariate values, must be zero.
+```{r}
+plot(m5, las = 1)
+```
+
+Diagnostics
+```{r}
+gam.check(m5)
+```
+
+If family is not Gaussian (more specifically, if the link function is not identity), remember to back-transform
+```{r}
+plot(TP ~ TSS, data = D, las = 1)
+pr <- predict(m5, newdata = D, se.fit = TRUE)
+with(D, lines(x = sort(TSS), y = pr$fit[order(TSS)],
+              lwd = 2, col = "blue"))
+```
+
+
+### Generalized additive model for location scale and shape (GAMLSS)
+
+Note that variance of residuals slightly increases with TSS. We can 
+
+- use generalized least squares (GLS) to transform the variables and stabilize the variance, or 
+- fit a separate model for variance, similar to the model for the mean. 
+
+Use the second approach in GAMLSS:
+```{r}
+library(gamlss)
+m6 <- gamlss(
+  TP ~ pb(TSS)
+  ,sigma.formula = ~TSS
+  ,family = GA
+  ,data = D
+  #,control = gamlss.control(n.cyc = 100, c.crit = 0.9)
+)
+summary(m6)
+```
+
+In this case, we model both parameters of the distribution:
+$$TP_i \sim Gamma(\mu_i, \sigma_i)$$
+$$\ln(\text{E}(TP_i)) = \ln(\mu_i) =  \beta_0 + f(TSS_i)$$
+$$\ln(\sigma_i) = c_0 + c_1TSS_i$$
+
+```{r}
+term.plot(m6, las = 1, se = TRUE, ylim = "common")
+```
+
+```{r}
+plot(m6)
+```
+
+### Next steps
+
+We have considered several models for the pair TP ~ TSS, without considering other variables yet. Need to carefully select an appropriate distribution family for modeling. 
+
+When modeling with smoothers we should consider the issue of concurvity (an analogue of collinearity in linear models), when smooth transformations of predictors ''look alike.'' There are functions to check concurvity in R. 
+```{r}
+m7 <- gam(TP ~ s(TSS) + s(SALINITY) + s(TN) + s(WTEMP), 
+          data = D, family = Gamma(link = log))
+summary(m7)
+par(mfrow = c(1, 4))
+plot(m7)
+```
+
+```{r}
+concurvity(m7)
+```
+
+```{r}
+concurvity(m7, full = FALSE)$estimate
+```
+
+Variable selection in GAM is more tedious than in linear models. A general recommendation for GAM is to do forward-selection: include only relevant meaningful variables, do not just throw everything into the model. Note that the model can hold a mix of smoothed and non-smoothed terms. For example, remove TN, do not smooth SALINITY:
+```{r}
+m8 <- gam(TP ~ s(TSS) + SALINITY + s(WTEMP), 
+          data = D, family = Gamma(link = log))
+par(mfrow = c(1, 3))
+plot(m8)
+concurvity(m8, full = FALSE)$estimate
+#gam.check(m8)
+```

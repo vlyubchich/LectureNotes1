@@ -24,11 +24,16 @@ The estimation of regression model \@ref(eq:mlr) and further inference are based
 
 ### Generalized linear model (GLM)
 
-Generalized linear models (GLMs) help to overcome the violation of normality assumption by extending the applicability of model \@ref(eq:mlr) to exponential-type distributions, such as Poisson, binomial, and gamma [@Wood:2006book]. In GLMs, distribution of $Y_i$ belongs to a family of exponential distributions, and a smooth monotonic link function $g(\cdot)$ is applied to transform the response variable:
+Generalized linear models (GLMs) help to overcome the violation of normality assumption by extending the applicability of model \@ref(eq:mlr) to exponential-type distributions, such as Poisson, binomial, and gamma [@Wood:2006book]. In GLMs, distribution of $Y_i$ belongs to a family of _exponential distributions_, and a smooth monotonic link function $g(\cdot)$ is applied to transform the response variable:
 \begin{equation}
     (\#eq:glm)
     g(\boldsymbol{\mu}) = \mathbf{X}\boldsymbol{\beta}.
 \end{equation}
+A distribution belongs to the exponential family of distributions if its probability density function can be written as:
+
+$$f_{\theta}(y) = \exp[{y\theta - b(\theta)}/a(\phi) + c(y, \phi)],$$
+where $b$, $a$, and $c$ are arbitrary functions, $\phi$ and arbitrary `scale' parameter, and $\mu$ is the `canonical parameter' of the distribution. For normal distribution, $\theta = \mu$ and $a(\phi) = \phi= \sigma^2$ [@Wood:2006book].
+
 Canonical link functions are identity, ln, and inverse for normal, Poisson, and gamma distributions, respectively. After such transformation, however, model \@ref(eq:glm) still assumes linear relationships between each of the original variables in $\mathbf{X}$ and the transformed response. Model \@ref(eq:glm) is applicable when the link function successfully linearizes the relationship between the risk variable and a predictor. In other cases, especially if there are multiple predictors, additional work on re-specifying the model may be required. For example, relationships between the response variable and different predictors may require different linearizing transformations, the relationships may be non-monotonic, and many of them may be thresholded (i.e., the effect of a covariate $X$ is pronounced only when $X$ takes on values from a certain range, such as the effect of daily precipitation on sediment concentrations in the streams is not noticeable below certain precipitation threshold). 
 
 ### Generalized additive model (GAM)
