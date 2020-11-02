@@ -1,9 +1,3 @@
-eq:general
-eq:mlr
-eq:glm
-eq:gam
-eq:gamlss
-eq:garma
 GLM
 theory
 multiple-linear-regression
@@ -12,4 +6,4 @@ generalized-additive-model-gam
 generalized-additive-model-for-location-scale-and-shape-gamlss
 generalized-autoregressive-moving-average-garma
 summary
-data-examples
+data-example
