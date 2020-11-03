@@ -120,7 +120,7 @@
 
 \title{Lecture Notes}
 \author{Vyacheslav Lyubchich}
-\date{2020-11-02}
+\date{2020-11-03}
 
 \begin{document}
 \maketitle
@@ -132,6 +132,12 @@
 \hypertarget{prerequisites}{%
 \chapter*{Prerequisites}\label{prerequisites}}
 \addcontentsline{toc}{chapter}{Prerequisites}
+
+\hypertarget{license}{%
+\section*{License}\label{license}}
+\addcontentsline{toc}{section}{License}
+
+{Lecture Notes} by Vyacheslav Lyubchich is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
 
 \hypertarget{GLM}{%
 \chapter{A short path to GLM and GAM}\label{GLM}}
@@ -216,6 +222,8 @@ The challenges of using the above statistical models include the choice of predi
 
 \hypertarget{data-example}{%
 \section{Data example}\label{data-example}}
+
+Load needed packages: dplyr \citep{R-dplyr}, etc.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -800,11 +808,11 @@ When modeling with smoothers we should consider the issue of concurvity (an anal
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Approximate significance of smooth terms:
-##               edf Ref.df      F  p-value    
-## s(TSS)      6.595  7.617 29.353  < 2e-16 ***
-## s(SALINITY) 6.923  7.966 10.892 4.79e-12 ***
-## s(TN)       1.000  1.000  0.519    0.473    
-## s(WTEMP)    7.342  8.298  7.683 6.73e-08 ***
+##               edf Ref.df      F p-value    
+## s(TSS)      6.595  7.617 29.353  <2e-16 ***
+## s(SALINITY) 6.923  7.966 10.892  <2e-16 ***
+## s(TN)       1.000  1.000  0.519   0.473    
+## s(WTEMP)    7.342  8.298  7.683  <2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 

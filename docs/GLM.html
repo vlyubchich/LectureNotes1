@@ -5,26 +5,26 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Lecture 1 A short path to GLM and GAM | Lecture Notes</title>
-  <meta name="description" content="The output format for this file is bookdown::gitbook." />
+  <meta name="description" content="Lecture notes with R examples." />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Lecture 1 A short path to GLM and GAM | Lecture Notes" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="The output format for this file is bookdown::gitbook." />
+  <meta property="og:description" content="Lecture notes with R examples." />
   <meta name="github-repo" content="vlyubchich/LectureNotes1" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Lecture 1 A short path to GLM and GAM | Lecture Notes" />
   
-  <meta name="twitter:description" content="The output format for this file is bookdown::gitbook." />
+  <meta name="twitter:description" content="Lecture notes with R examples." />
   
 
 <meta name="author" content="Vyacheslav Lyubchich" />
 
 
-<meta name="date" content="2020-11-02" />
+<meta name="date" content="2020-11-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,12 +50,13 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
@@ -64,14 +65,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +83,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -131,7 +134,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Lecture Notes 1</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="GLM.html"><a href="GLM.html"><i class="fa fa-check"></i><b>1</b> A short path to GLM and GAM</a><ul>
 <li class="chapter" data-level="1.1" data-path="GLM.html"><a href="GLM.html#theory"><i class="fa fa-check"></i><b>1.1</b> Theory</a><ul>
 <li class="chapter" data-level="1.1.1" data-path="GLM.html"><a href="GLM.html#multiple-linear-regression"><i class="fa fa-check"></i><b>1.1.1</b> Multiple linear regression</a></li>
@@ -242,10 +247,11 @@ where <span class="math inline">\(t=1,\ldots,n\)</span> is the time index; <span
 </div>
 <div id="data-example" class="section level2">
 <h2><span class="header-section-number">1.2</span> Data example</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(GGally)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(plotly)</a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a></code></pre></div>
+<p>Load needed packages: dplyr <span class="citation">(Wickham et al. <a href="#ref-R-dplyr" role="doc-biblioref">2020</a>)</span>, etc.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="GLM.html#cb1-1"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="GLM.html#cb1-2"></a><span class="kw">library</span>(GGally)</span>
+<span id="cb1-3"><a href="GLM.html#cb1-3"></a><span class="kw">library</span>(plotly)</span>
+<span id="cb1-4"><a href="GLM.html#cb1-4"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)</span></code></pre></div>
 <p>Select average water quality measurements in Chesapeake Bay for December 2010:</p>
 <ul>
 <li>Station: station at which the measurements were taken. There are 133 stations in the data file; at this time, we disregard the spatial patterns;</li>
@@ -258,10 +264,10 @@ where <span class="math inline">\(t=1,\ldots,n\)</span> is the time index; <span
 <li>TP: concentration of total phosphorus.</li>
 </ul>
 <p>Then try modeling TP with different methods.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">D &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;./data/CBmonthly.csv&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(., Year <span class="op">==</span><span class="st"> </span><span class="dv">2010</span> <span class="op">&amp;</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> </span><span class="dv">12</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(Station, DO, CHLA, SALINITY, WTEMP, TSS, TN, TP)</a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="kw">str</span>(D)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="GLM.html#cb2-1"></a>D &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;./data/CBmonthly.csv&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-2"><a href="GLM.html#cb2-2"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(., Year <span class="op">==</span><span class="st"> </span><span class="dv">2010</span> <span class="op">&amp;</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> </span><span class="dv">12</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-3"><a href="GLM.html#cb2-3"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(Station, DO, CHLA, SALINITY, WTEMP, TSS, TN, TP)</span>
+<span id="cb2-4"><a href="GLM.html#cb2-4"></a><span class="kw">str</span>(D)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    133 obs. of  8 variables:
 ##  $ Station : chr  &quot;CB1.1&quot; &quot;CB2.1&quot; &quot;CB2.2&quot; &quot;CB3.1&quot; ...
 ##  $ DO      : num  14.2 14.2 13.4 12.7 12.2 ...
@@ -272,8 +278,8 @@ where <span class="math inline">\(t=1,\ldots,n\)</span> is the time index; <span
 ##  $ TN      : num  1.66 1.66 1.55 1.25 1.12 ...
 ##  $ TP      : num  0.045 0.045 0.0403 0.0436 0.036 ...</code></pre>
 <p>Plot data</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">p &lt;-<span class="st"> </span><span class="kw">ggpairs</span>(D[,<span class="op">-</span><span class="dv">1</span>])</a>
-<a class="sourceLine" id="cb4-2" title="2">p <span class="co">#ggplotly(p)</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="GLM.html#cb4-1"></a>p &lt;-<span class="st"> </span><span class="kw">ggpairs</span>(D[,<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb4-2"><a href="GLM.html#cb4-2"></a>p <span class="co">#ggplotly(p)</span></span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <div id="simple-linear-regression" class="section level3">
 <h3><span class="header-section-number">1.2.1</span> Simple linear regression</h3>
@@ -281,8 +287,8 @@ where <span class="math inline">\(t=1,\ldots,n\)</span> is the time index; <span
 Our simple linear regression model is</p>
 <p><span class="math display">\[TP_i = \beta_0 + \beta_1 TSS_i + \epsilon_i,\]</span>
 where <span class="math inline">\(i = 1,\ldots,n\)</span> (<span class="math inline">\(n =\)</span> 133 is the sample size).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D)</a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="kw">summary</span>(m1)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="GLM.html#cb5-1"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D)</span>
+<span id="cb5-2"><a href="GLM.html#cb5-2"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = TP ~ TSS, data = D)
@@ -301,11 +307,11 @@ where <span class="math inline">\(i = 1,\ldots,n\)</span> (<span class="math inl
 ## Residual standard error: 0.01375 on 131 degrees of freedom
 ## Multiple R-squared:  0.7412, Adjusted R-squared:  0.7393 
 ## F-statistic: 375.3 on 1 and 131 DF,  p-value: &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="kw">plot</span>(m1, <span class="dt">las =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="GLM.html#cb7-1"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb7-2"><a href="GLM.html#cb7-2"></a><span class="kw">plot</span>(m1, <span class="dt">las =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">plot</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="kw">abline</span>(m1, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="GLM.html#cb8-1"></a><span class="kw">plot</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</span>
+<span id="cb8-2"><a href="GLM.html#cb8-2"></a><span class="kw">abline</span>(m1, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>The model clearly has problems.</p>
 </div>
@@ -314,8 +320,8 @@ where <span class="math inline">\(i = 1,\ldots,n\)</span> (<span class="math inl
 <p>Without modifying the response variable, apply a polynomial transformation to the explanatory variable, for example quadratic (informed by the plot). Our polynomial regression model is</p>
 <p><span class="math display">\[TP_i = \beta_0 + \beta_1 TSS_i + \beta_2 TSS^2_i + \epsilon_i,\]</span>
 Use function poly to create orthogonal polynomials:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(TP <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(TSS, <span class="dv">2</span>), <span class="dt">data =</span> D)</a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="kw">summary</span>(m2)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="GLM.html#cb9-1"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(TP <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(TSS, <span class="dv">2</span>), <span class="dt">data =</span> D)</span>
+<span id="cb9-2"><a href="GLM.html#cb9-2"></a><span class="kw">summary</span>(m2)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = TP ~ poly(TSS, 2), data = D)
@@ -335,28 +341,28 @@ Use function poly to create orthogonal polynomials:</p>
 ## Residual standard error: 0.01333 on 130 degrees of freedom
 ## Multiple R-squared:  0.7588, Adjusted R-squared:  0.7551 
 ## F-statistic: 204.5 on 2 and 130 DF,  p-value: &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="kw">plot</span>(m2, <span class="dt">las =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="GLM.html#cb11-1"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb11-2"><a href="GLM.html#cb11-2"></a><span class="kw">plot</span>(m2, <span class="dt">las =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">plot</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb12-2" title="2">pr &lt;-<span class="st"> </span><span class="kw">predict</span>(m2, <span class="dt">newdata =</span> D, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb12-3" title="3"><span class="kw">with</span>(D, <span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">sort</span>(TSS), <span class="dt">y =</span> pr<span class="op">$</span>fit[<span class="kw">order</span>(TSS)],</a>
-<a class="sourceLine" id="cb12-4" title="4">              <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="GLM.html#cb12-1"></a><span class="kw">plot</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</span>
+<span id="cb12-2"><a href="GLM.html#cb12-2"></a>pr &lt;-<span class="st"> </span><span class="kw">predict</span>(m2, <span class="dt">newdata =</span> D, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb12-3"><a href="GLM.html#cb12-3"></a><span class="kw">with</span>(D, <span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">sort</span>(TSS), <span class="dt">y =</span> pr<span class="op">$</span>fit[<span class="kw">order</span>(TSS)],</span>
+<span id="cb12-4"><a href="GLM.html#cb12-4"></a>              <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 <div id="power-transformation" class="section level3">
 <h3><span class="header-section-number">1.2.3</span> Power transformation</h3>
 <p>Apply Box–Cox method to select a power transformation for the response variable:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">library</span>(MASS)</a>
-<a class="sourceLine" id="cb13-2" title="2"><span class="kw">boxcox</span>(m1)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="GLM.html#cb13-1"></a><span class="kw">library</span>(MASS)</span>
+<span id="cb13-2"><a href="GLM.html#cb13-2"></a><span class="kw">boxcox</span>(m1)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>Check linearity after applying the transformation</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">plot</span>(<span class="kw">sqrt</span>(TP) <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="GLM.html#cb14-1"></a><span class="kw">plot</span>(<span class="kw">sqrt</span>(TP) <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Hence, the model looks like</p>
 <p><span class="math display">\[\sqrt{TP_i} = \beta_0 + \beta_1 TSS_i + \epsilon_i\]</span></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">sqrt</span>(TP) <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D)</a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="kw">summary</span>(m3)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="GLM.html#cb15-1"></a>m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">sqrt</span>(TP) <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D)</span>
+<span id="cb15-2"><a href="GLM.html#cb15-2"></a><span class="kw">summary</span>(m3)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = sqrt(TP) ~ TSS, data = D)
@@ -375,25 +381,25 @@ Use function poly to create orthogonal polynomials:</p>
 ## Residual standard error: 0.03231 on 131 degrees of freedom
 ## Multiple R-squared:  0.7049, Adjusted R-squared:  0.7027 
 ## F-statistic:   313 on 1 and 131 DF,  p-value: &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb17-2" title="2"><span class="kw">plot</span>(m3, <span class="dt">las =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="GLM.html#cb17-1"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb17-2"><a href="GLM.html#cb17-2"></a><span class="kw">plot</span>(m3, <span class="dt">las =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>When plotting the fitted values, remember to back-transform</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">plot</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb18-2" title="2">pr &lt;-<span class="st"> </span><span class="kw">predict</span>(m3, <span class="dt">newdata =</span> D, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb18-3" title="3"><span class="kw">with</span>(D, <span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">sort</span>(TSS), <span class="dt">y =</span> pr<span class="op">$</span>fit[<span class="kw">order</span>(TSS)]<span class="op">^</span><span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb18-4" title="4">              <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="GLM.html#cb18-1"></a><span class="kw">plot</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</span>
+<span id="cb18-2"><a href="GLM.html#cb18-2"></a>pr &lt;-<span class="st"> </span><span class="kw">predict</span>(m3, <span class="dt">newdata =</span> D, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb18-3"><a href="GLM.html#cb18-3"></a><span class="kw">with</span>(D, <span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">sort</span>(TSS), <span class="dt">y =</span> pr<span class="op">$</span>fit[<span class="kw">order</span>(TSS)]<span class="op">^</span><span class="dv">2</span>,</span>
+<span id="cb18-4"><a href="GLM.html#cb18-4"></a>              <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 <div id="generalized-linear-model-glm-1" class="section level3">
 <h3><span class="header-section-number">1.2.4</span> Generalized linear model (GLM)</h3>
 <p>Review the distribution of the response variable and select an appropriate one</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1">?family</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="GLM.html#cb19-1"></a>?family</span></code></pre></div>
 <p>Check linearity after applying the transformation (link function for the selected distribution)</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">plot</span>(<span class="kw">log</span>(TP) <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="GLM.html#cb20-1"></a><span class="kw">plot</span>(<span class="kw">log</span>(TP) <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">m4 &lt;-<span class="st"> </span><span class="kw">glm</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">family =</span> <span class="kw">Gamma</span>(<span class="dt">link =</span> <span class="st">&quot;log&quot;</span>))</a>
-<a class="sourceLine" id="cb21-2" title="2"><span class="kw">summary</span>(m4)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="GLM.html#cb21-1"></a>m4 &lt;-<span class="st"> </span><span class="kw">glm</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">family =</span> <span class="kw">Gamma</span>(<span class="dt">link =</span> <span class="st">&quot;log&quot;</span>))</span>
+<span id="cb21-2"><a href="GLM.html#cb21-2"></a><span class="kw">summary</span>(m4)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = TP ~ TSS, family = Gamma(link = &quot;log&quot;), data = D)
@@ -419,21 +425,21 @@ Use function poly to create orthogonal polynomials:</p>
 <p>Hence, the model is
 <span class="math display">\[TP_i \sim Gamma\]</span>
 <span class="math display">\[\ln(\text{E}(TP_i)) = \beta_0 + \beta_1 TSS_i\]</span></p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb23-2" title="2"><span class="kw">plot</span>(m4, <span class="dt">las =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="GLM.html#cb23-1"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb23-2"><a href="GLM.html#cb23-2"></a><span class="kw">plot</span>(m4, <span class="dt">las =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>When plotting the fitted values, remember to back-transform</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="kw">plot</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb24-2" title="2">pr &lt;-<span class="st"> </span><span class="kw">predict</span>(m4, <span class="dt">newdata =</span> D, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb24-3" title="3"><span class="kw">with</span>(D, <span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">sort</span>(TSS), <span class="dt">y =</span> <span class="kw">exp</span>(pr<span class="op">$</span>fit[<span class="kw">order</span>(TSS)]),</a>
-<a class="sourceLine" id="cb24-4" title="4">              <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="GLM.html#cb24-1"></a><span class="kw">plot</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</span>
+<span id="cb24-2"><a href="GLM.html#cb24-2"></a>pr &lt;-<span class="st"> </span><span class="kw">predict</span>(m4, <span class="dt">newdata =</span> D, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb24-3"><a href="GLM.html#cb24-3"></a><span class="kw">with</span>(D, <span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">sort</span>(TSS), <span class="dt">y =</span> <span class="kw">exp</span>(pr<span class="op">$</span>fit[<span class="kw">order</span>(TSS)]),</span>
+<span id="cb24-4"><a href="GLM.html#cb24-4"></a>              <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 <div id="generalized-additive-model-gam-1" class="section level3">
 <h3><span class="header-section-number">1.2.5</span> Generalized additive model (GAM)</h3>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">library</span>(mgcv)</a>
-<a class="sourceLine" id="cb25-2" title="2">m5 &lt;-<span class="st"> </span><span class="kw">gam</span>(TP <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(TSS), <span class="dt">data =</span> D, <span class="dt">family =</span> <span class="kw">Gamma</span>(<span class="dt">link =</span> log))</a>
-<a class="sourceLine" id="cb25-3" title="3"><span class="kw">summary</span>(m5)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="GLM.html#cb25-1"></a><span class="kw">library</span>(mgcv)</span>
+<span id="cb25-2"><a href="GLM.html#cb25-2"></a>m5 &lt;-<span class="st"> </span><span class="kw">gam</span>(TP <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(TSS), <span class="dt">data =</span> D, <span class="dt">family =</span> <span class="kw">Gamma</span>(<span class="dt">link =</span> log))</span>
+<span id="cb25-3"><a href="GLM.html#cb25-3"></a><span class="kw">summary</span>(m5)</span></code></pre></div>
 <pre><code>## 
 ## Family: Gamma 
 ## Link function: log 
@@ -459,10 +465,10 @@ Use function poly to create orthogonal polynomials:</p>
 <span class="math display">\[TP_i \sim Gamma\]</span>
 <span class="math display">\[\ln(\text{E}(TP_i)) = \beta_0 + f(TSS_i)\]</span></p>
 <p>Visualize the smooth term. For identifiability, sum of the values of each curve, at the observed covariate values, must be zero.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="kw">plot</span>(m5, <span class="dt">las =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="GLM.html#cb27-1"></a><span class="kw">plot</span>(m5, <span class="dt">las =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>Diagnostics</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="kw">gam.check</span>(m5)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="GLM.html#cb28-1"></a><span class="kw">gam.check</span>(m5)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <pre><code>## 
 ## Method: GCV   Optimizer: outer newton
@@ -478,10 +484,10 @@ Use function poly to create orthogonal polynomials:</p>
 ##         k&#39; edf k-index p-value
 ## s(TSS) 9.0 5.6    0.91    0.18</code></pre>
 <p>If family is not Gaussian (more specifically, if the link function is not identity), remember to back-transform</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1"><span class="kw">plot</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb30-2" title="2">pr &lt;-<span class="st"> </span><span class="kw">predict</span>(m5, <span class="dt">newdata =</span> D, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb30-3" title="3"><span class="kw">with</span>(D, <span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">sort</span>(TSS), <span class="dt">y =</span> <span class="kw">exp</span>(pr<span class="op">$</span>fit[<span class="kw">order</span>(TSS)]),</a>
-<a class="sourceLine" id="cb30-4" title="4">              <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="GLM.html#cb30-1"></a><span class="kw">plot</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</span>
+<span id="cb30-2"><a href="GLM.html#cb30-2"></a>pr &lt;-<span class="st"> </span><span class="kw">predict</span>(m5, <span class="dt">newdata =</span> D, <span class="dt">se.fit =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb30-3"><a href="GLM.html#cb30-3"></a><span class="kw">with</span>(D, <span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">sort</span>(TSS), <span class="dt">y =</span> <span class="kw">exp</span>(pr<span class="op">$</span>fit[<span class="kw">order</span>(TSS)]),</span>
+<span id="cb30-4"><a href="GLM.html#cb30-4"></a>              <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
 <div id="generalized-additive-model-for-location-scale-and-shape-gamlss-1" class="section level3">
@@ -492,21 +498,21 @@ Use function poly to create orthogonal polynomials:</p>
 <li>fit a separate model for variance, similar to the model for the mean.</li>
 </ul>
 <p>Use the second approach in GAMLSS:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">library</span>(gamlss)</a>
-<a class="sourceLine" id="cb31-2" title="2">m6 &lt;-<span class="st"> </span><span class="kw">gamlss</span>(</a>
-<a class="sourceLine" id="cb31-3" title="3">  TP <span class="op">~</span><span class="st"> </span><span class="kw">pb</span>(TSS)</a>
-<a class="sourceLine" id="cb31-4" title="4">  ,<span class="dt">sigma.formula =</span> <span class="op">~</span>TSS</a>
-<a class="sourceLine" id="cb31-5" title="5">  ,<span class="dt">family =</span> GA</a>
-<a class="sourceLine" id="cb31-6" title="6">  ,<span class="dt">data =</span> D</a>
-<a class="sourceLine" id="cb31-7" title="7">  <span class="co">#,control = gamlss.control(n.cyc = 100, c.crit = 0.9)</span></a>
-<a class="sourceLine" id="cb31-8" title="8">)</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="GLM.html#cb31-1"></a><span class="kw">library</span>(gamlss)</span>
+<span id="cb31-2"><a href="GLM.html#cb31-2"></a>m6 &lt;-<span class="st"> </span><span class="kw">gamlss</span>(</span>
+<span id="cb31-3"><a href="GLM.html#cb31-3"></a>  TP <span class="op">~</span><span class="st"> </span><span class="kw">pb</span>(TSS)</span>
+<span id="cb31-4"><a href="GLM.html#cb31-4"></a>  ,<span class="dt">sigma.formula =</span> <span class="op">~</span>TSS</span>
+<span id="cb31-5"><a href="GLM.html#cb31-5"></a>  ,<span class="dt">family =</span> GA</span>
+<span id="cb31-6"><a href="GLM.html#cb31-6"></a>  ,<span class="dt">data =</span> D</span>
+<span id="cb31-7"><a href="GLM.html#cb31-7"></a>  <span class="co">#,control = gamlss.control(n.cyc = 100, c.crit = 0.9)</span></span>
+<span id="cb31-8"><a href="GLM.html#cb31-8"></a>)</span></code></pre></div>
 <pre><code>## GAMLSS-RS iteration 1: Global Deviance = -821.986 
 ## GAMLSS-RS iteration 2: Global Deviance = -825.3166 
 ## GAMLSS-RS iteration 3: Global Deviance = -825.8326 
 ## GAMLSS-RS iteration 4: Global Deviance = -825.8686 
 ## GAMLSS-RS iteration 5: Global Deviance = -825.8733 
 ## GAMLSS-RS iteration 6: Global Deviance = -825.874</code></pre>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">summary</span>(m6)</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="GLM.html#cb33-1"></a><span class="kw">summary</span>(m6)</span></code></pre></div>
 <pre><code>## ******************************************************************
 ## Family:  c(&quot;GA&quot;, &quot;Gamma&quot;) 
 ## 
@@ -551,9 +557,9 @@ Use function poly to create orthogonal polynomials:</p>
 <span class="math display">\[TP_i \sim Gamma(\mu_i, \sigma_i)\]</span>
 <span class="math display">\[\ln(\text{E}(TP_i)) = \ln(\mu_i) =  \beta_0 + f(TSS_i)\]</span>
 <span class="math display">\[\ln(\sigma_i) = c_0 + c_1TSS_i\]</span></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1"><span class="kw">term.plot</span>(m6, <span class="dt">las =</span> <span class="dv">1</span>, <span class="dt">se =</span> <span class="ot">TRUE</span>, <span class="dt">ylim =</span> <span class="st">&quot;common&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="GLM.html#cb35-1"></a><span class="kw">term.plot</span>(m6, <span class="dt">las =</span> <span class="dv">1</span>, <span class="dt">se =</span> <span class="ot">TRUE</span>, <span class="dt">ylim =</span> <span class="st">&quot;common&quot;</span>)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">plot</span>(m6)</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="GLM.html#cb36-1"></a><span class="kw">plot</span>(m6)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <pre><code>## ******************************************************************
 ##        Summary of the Quantile Residuals
@@ -563,19 +569,19 @@ Use function poly to create orthogonal polynomials:</p>
 ##                coef. of kurtosis  =  2.612453 
 ## Filliben correlation coefficient  =  0.988048 
 ## ******************************************************************</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1"><span class="kw">plot</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb38-2" title="2">pr &lt;-<span class="st"> </span><span class="kw">predict</span>(m6, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)</a>
-<a class="sourceLine" id="cb38-3" title="3"><span class="kw">with</span>(D, <span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">sort</span>(TSS), <span class="dt">y =</span> pr[<span class="kw">order</span>(TSS)],</a>
-<a class="sourceLine" id="cb38-4" title="4">              <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="GLM.html#cb38-1"></a><span class="kw">plot</span>(TP <span class="op">~</span><span class="st"> </span>TSS, <span class="dt">data =</span> D, <span class="dt">las =</span> <span class="dv">1</span>)</span>
+<span id="cb38-2"><a href="GLM.html#cb38-2"></a>pr &lt;-<span class="st"> </span><span class="kw">predict</span>(m6, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb38-3"><a href="GLM.html#cb38-3"></a><span class="kw">with</span>(D, <span class="kw">lines</span>(<span class="dt">x =</span> <span class="kw">sort</span>(TSS), <span class="dt">y =</span> pr[<span class="kw">order</span>(TSS)],</span>
+<span id="cb38-4"><a href="GLM.html#cb38-4"></a>              <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 </div>
 <div id="next-steps" class="section level3">
 <h3><span class="header-section-number">1.2.7</span> Next steps</h3>
 <p>We have considered several models for the pair TP ~ TSS, without considering other variables yet. Need to carefully select an appropriate distribution family for modeling.</p>
 <p>When modeling with smoothers we should consider the issue of concurvity (an analogue of collinearity in linear models), when smooth transformations of predictors ‘look alike.’ There are functions to check concurvity in R.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1">m7 &lt;-<span class="st"> </span><span class="kw">gam</span>(TP <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(TSS) <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(SALINITY) <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(TN) <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(WTEMP), </a>
-<a class="sourceLine" id="cb39-2" title="2">          <span class="dt">data =</span> D, <span class="dt">family =</span> <span class="kw">Gamma</span>(<span class="dt">link =</span> log))</a>
-<a class="sourceLine" id="cb39-3" title="3"><span class="kw">summary</span>(m7)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="GLM.html#cb39-1"></a>m7 &lt;-<span class="st"> </span><span class="kw">gam</span>(TP <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(TSS) <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(SALINITY) <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(TN) <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(WTEMP), </span>
+<span id="cb39-2"><a href="GLM.html#cb39-2"></a>          <span class="dt">data =</span> D, <span class="dt">family =</span> <span class="kw">Gamma</span>(<span class="dt">link =</span> log))</span>
+<span id="cb39-3"><a href="GLM.html#cb39-3"></a><span class="kw">summary</span>(m7)</span></code></pre></div>
 <pre><code>## 
 ## Family: Gamma 
 ## Link function: log 
@@ -590,25 +596,25 @@ Use function poly to create orthogonal polynomials:</p>
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Approximate significance of smooth terms:
-##               edf Ref.df      F  p-value    
-## s(TSS)      6.595  7.617 29.353  &lt; 2e-16 ***
-## s(SALINITY) 6.923  7.966 10.892 4.79e-12 ***
-## s(TN)       1.000  1.000  0.519    0.473    
-## s(WTEMP)    7.342  8.298  7.683 6.73e-08 ***
+##               edf Ref.df      F p-value    
+## s(TSS)      6.595  7.617 29.353  &lt;2e-16 ***
+## s(SALINITY) 6.923  7.966 10.892  &lt;2e-16 ***
+## s(TN)       1.000  1.000  0.519   0.473    
+## s(WTEMP)    7.342  8.298  7.683  &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## R-sq.(adj) =  0.886   Deviance explained = 92.4%
 ## GCV = 0.035873  Scale est. = 0.032206  n = 133</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb41-2" title="2"><span class="kw">plot</span>(m7)</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="GLM.html#cb41-1"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">4</span>))</span>
+<span id="cb41-2"><a href="GLM.html#cb41-2"></a><span class="kw">plot</span>(m7)</span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1"><span class="kw">concurvity</span>(m7)</a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="GLM.html#cb42-1"></a><span class="kw">concurvity</span>(m7)</span></code></pre></div>
 <pre><code>##                  para    s(TSS) s(SALINITY)     s(TN)  s(WTEMP)
 ## worst    2.255338e-24 0.8492033   0.9328362 0.9342809 0.8218917
 ## observed 2.255338e-24 0.6554349   0.9203188 0.7103660 0.3510102
 ## estimate 2.255338e-24 0.5150905   0.8471733 0.5209155 0.7415149</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1"><span class="kw">concurvity</span>(m7, <span class="dt">full =</span> <span class="ot">FALSE</span>)<span class="op">$</span>estimate</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="GLM.html#cb44-1"></a><span class="kw">concurvity</span>(m7, <span class="dt">full =</span> <span class="ot">FALSE</span>)<span class="op">$</span>estimate</span></code></pre></div>
 <pre><code>##                     para       s(TSS)  s(SALINITY)        s(TN)     s(WTEMP)
 ## para        1.000000e+00 1.696166e-27 1.054164e-28 2.357477e-28 6.180660e-28
 ## s(TSS)      7.907947e-25 1.000000e+00 4.507004e-01 2.590425e-01 1.895382e-01
@@ -616,16 +622,16 @@ Use function poly to create orthogonal polynomials:</p>
 ## s(TN)       1.318787e-25 2.477700e-01 7.128446e-01 1.000000e+00 5.096872e-01
 ## s(WTEMP)    4.200428e-25 2.441318e-01 4.495728e-01 2.178949e-01 1.000000e+00</code></pre>
 <p>Variable selection in GAM is more tedious than in linear models. A general recommendation for GAM is to do forward-selection: include only relevant meaningful variables, do not just throw everything into the model. Note that the model can hold a mix of smoothed and non-smoothed terms. For example, remove TN, do not smooth SALINITY:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1">m8 &lt;-<span class="st"> </span><span class="kw">gam</span>(TP <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(TSS) <span class="op">+</span><span class="st"> </span>SALINITY <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(WTEMP), </a>
-<a class="sourceLine" id="cb46-2" title="2">          <span class="dt">data =</span> D, <span class="dt">family =</span> <span class="kw">Gamma</span>(<span class="dt">link =</span> log))</a>
-<a class="sourceLine" id="cb46-3" title="3"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb46-4" title="4"><span class="kw">plot</span>(m8)</a>
-<a class="sourceLine" id="cb46-5" title="5"><span class="kw">concurvity</span>(m8, <span class="dt">full =</span> <span class="ot">FALSE</span>)<span class="op">$</span>estimate</a></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="GLM.html#cb46-1"></a>m8 &lt;-<span class="st"> </span><span class="kw">gam</span>(TP <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(TSS) <span class="op">+</span><span class="st"> </span>SALINITY <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(WTEMP), </span>
+<span id="cb46-2"><a href="GLM.html#cb46-2"></a>          <span class="dt">data =</span> D, <span class="dt">family =</span> <span class="kw">Gamma</span>(<span class="dt">link =</span> log))</span>
+<span id="cb46-3"><a href="GLM.html#cb46-3"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb46-4"><a href="GLM.html#cb46-4"></a><span class="kw">plot</span>(m8)</span>
+<span id="cb46-5"><a href="GLM.html#cb46-5"></a><span class="kw">concurvity</span>(m8, <span class="dt">full =</span> <span class="ot">FALSE</span>)<span class="op">$</span>estimate</span></code></pre></div>
 <pre><code>##                  para       s(TSS)     s(WTEMP)
 ## para     1.000000e+00 1.696166e-27 6.180660e-28
 ## s(TSS)   7.944119e-25 1.000000e+00 1.895382e-01
 ## s(WTEMP) 4.226487e-25 2.441318e-01 1.000000e+00</code></pre>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1"><span class="co">#gam.check(m8)</span></a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="GLM.html#cb48-1"></a><span class="co">#gam.check(m8)</span></span></code></pre></div>
 <p><img src="Lecture-notes-1_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 
 </div>
@@ -650,6 +656,9 @@ Use function poly to create orthogonal polynomials:</p>
 </div>
 <div id="ref-Stasinopoulos:Rigby:2007">
 <p>Stasinopoulos, D. M., and R. A. Rigby. 2007. “Generalized Additive Models for Location Scale and Shape (GAMLSS) in R.” <em>Journal of Statistical Software</em> 23 (7): 1–46.</p>
+</div>
+<div id="ref-R-dplyr">
+<p>Wickham, Hadley, Romain François, Lionel Henry, and Kirill Müller. 2020. <em>Dplyr: A Grammar of Data Manipulation</em>. <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>.</p>
 </div>
 <div id="ref-Wood:2006book">
 <p>Wood, S. N. 2006. <em>Generalized Additive Models: An Introduction with R</em>. New York: Chapman; Hall/CRC.</p>

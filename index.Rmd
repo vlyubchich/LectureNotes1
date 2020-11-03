@@ -9,7 +9,7 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: vlyubchich/LectureNotes1
-description: "The output format for this file is bookdown::gitbook."
+description: "Lecture notes with R examples."
 ---
 
 ```{r setup, include=FALSE}
@@ -35,7 +35,12 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE
 
 <!-- To compile this example to PDF, you need XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): <https://yihui.name/tinytex/>. -->
 
-<!-- ```{r include=FALSE} -->
+## License {-}
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Lecture Notes</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/vlyubchich/LectureNotes1" property="cc:attributionName" rel="cc:attributionURL">Vyacheslav Lyubchich</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+
+
+<!-- ```{r include = FALSE} -->
 <!-- # automatically create a bib database for R packages -->
 <!-- knitr::write_bib(c( -->
 <!--   .packages(), 'bookdown', 'knitr', 'rmarkdown' -->

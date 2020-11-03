@@ -15,12 +15,95 @@
   url = {https://github.com/rstudio/bookdown},
 }
 
+@Manual{R-dplyr,
+  title = {dplyr: A Grammar of Data Manipulation},
+  author = {Hadley Wickham and Romain François and Lionel {
+             Henry} and Kirill Müller},
+  year = {2020},
+  note = {R package version 1.0.2},
+  url = {https://CRAN.R-project.org/package=dplyr},
+}
+
+@Manual{R-gamlss,
+  title = {gamlss: Generalised Additive Models for Location Scale and Shape},
+  author = {Mikis Stasinopoulos and Bob Rigby},
+  year = {2020},
+  note = {R package version 5.2-0},
+  url = {https://www.gamlss.com/},
+}
+
+@Manual{R-gamlss.data,
+  title = {gamlss.data: GAMLSS Data},
+  author = {Mikis Stasinopoulos and Bob Rigby and Fernanda {De Bastiani}},
+  year = {2019},
+  note = {R package version 5.1-4},
+  url = {http://www.gamlss.org/},
+}
+
+@Manual{R-gamlss.dist,
+  title = {gamlss.dist: Distributions for Generalized Additive Models for Location Scale
+and Shape},
+  author = {Mikis Stasinopoulos and Robert Rigby},
+  year = {2020},
+  note = {R package version 5.1-7},
+  url = {http://www.gamlss.org/},
+}
+
+@Manual{R-GGally,
+  title = {GGally: Extension to ggplot2},
+  author = {Barret Schloerke and Di Cook and Joseph Larmarange and Francois Briatte and Moritz Marbach and Edwin Thoen and Amos Elberg and Jason Crowley},
+  year = {2020},
+  note = {R package version 2.0.0},
+  url = {https://CRAN.R-project.org/package=GGally},
+}
+
+@Manual{R-ggplot2,
+  title = {ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics},
+  author = {Hadley Wickham and Winston Chang and Lionel Henry and Thomas Lin Pedersen and Kohske Takahashi and Claus Wilke and Kara Woo and Hiroaki Yutani and Dewey Dunnington},
+  year = {2020},
+  note = {R package version 3.3.2},
+  url = {https://CRAN.R-project.org/package=ggplot2},
+}
+
 @Manual{R-knitr,
   title = {knitr: A General-Purpose Package for Dynamic Report Generation in R},
   author = {Yihui Xie},
   year = {2020},
   note = {R package version 1.30},
   url = {https://yihui.org/knitr/},
+}
+
+@Manual{R-MASS,
+  title = {MASS: Support Functions and Datasets for Venables and Ripley's MASS},
+  author = {Brian Ripley},
+  year = {2020},
+  note = {R package version 7.3-51.6},
+  url = {http://www.stats.ox.ac.uk/pub/MASS4/},
+}
+
+@Manual{R-mgcv,
+  title = {mgcv: Mixed GAM Computation Vehicle with Automatic Smoothness
+Estimation},
+  author = {Simon Wood},
+  year = {2020},
+  note = {R package version 1.8-33},
+  url = {https://CRAN.R-project.org/package=mgcv},
+}
+
+@Manual{R-nlme,
+  title = {nlme: Linear and Nonlinear Mixed Effects Models},
+  author = {José Pinheiro and Douglas Bates and {R-core}},
+  year = {2020},
+  note = {R package version 3.1-148},
+  url = {https://svn.r-project.org/R-packages/trunk/nlme},
+}
+
+@Manual{R-plotly,
+  title = {plotly: Create Interactive Web Graphics via plotly.js},
+  author = {Carson Sievert and Chris Parmer and Toby Hocking and Scott Chamberlain and Karthik Ram and Marianne Corvellec and Pedro Despouy},
+  year = {2020},
+  note = {R package version 4.9.2.1},
+  url = {https://CRAN.R-project.org/package=plotly},
 }
 
 @Manual{R-rmarkdown,
@@ -39,6 +122,25 @@
   year = {2016},
   note = {ISBN 978-1138700109},
   url = {https://github.com/rstudio/bookdown},
+}
+
+@Article{gamlss2005,
+  title = {Generalized additive models for location, scale and shape,(with discussion)},
+  journal = {Applied Statistics},
+  volume = {54},
+  part = {3},
+  pages = {507-554},
+  year = {2005},
+  author = {R. A. Rigby and D. M. Stasinopoulos},
+}
+
+@Book{ggplot22016,
+  author = {Hadley Wickham},
+  title = {ggplot2: Elegant Graphics for Data Analysis},
+  publisher = {Springer-Verlag New York},
+  year = {2016},
+  isbn = {978-3-319-24277-4},
+  url = {https://ggplot2.tidyverse.org},
 }
 
 @Book{knitr2015,
@@ -61,6 +163,75 @@
   year = {2014},
   note = {ISBN 978-1466561595},
   url = {http://www.crcpress.com/product/isbn/9781466561595},
+}
+
+@Book{MASS2002,
+  title = {Modern Applied Statistics with S},
+  author = {W. N. Venables and B. D. Ripley},
+  publisher = {Springer},
+  edition = {Fourth},
+  address = {New York},
+  year = {2002},
+  note = {ISBN 0-387-95457-0},
+  url = {http://www.stats.ox.ac.uk/pub/MASS4},
+}
+
+@Article{mgcv2011,
+  title = {Fast stable restricted maximum likelihood and marginal 
+likelihood estimation of semiparametric generalized linear models},
+  journal = {Journal of the Royal Statistical Society (B)},
+  volume = {73},
+  number = {1},
+  pages = {3-36},
+  year = {2011},
+  author = {S. N. Wood},
+}
+
+@Article{mgcv2016,
+  title = {Smoothing parameter and model selection for general smooth models (with discussion)},
+  author = {S.N. Wood and {N.} and {Pya} and B. S{"a}fken},
+  journal = {Journal of the American Statistical Association},
+  year = {2016},
+  pages = {1548-1575},
+  volume = {111},
+}
+
+@Article{mgcv2004,
+  title = {Stable and efficient multiple smoothing parameter estimation for 
+         generalized additive models},
+  journal = {Journal of the American Statistical Association},
+  volume = {99},
+  number = {467},
+  pages = {673-686},
+  year = {2004},
+  author = {S. N. Wood},
+}
+
+@Book{mgcv2017,
+  title = {Generalized Additive Models: An Introduction with R},
+  year = {2017},
+  author = {S.N Wood},
+  edition = {2},
+  publisher = {Chapman and Hall/CRC},
+}
+
+@Article{mgcv2003,
+  title = {Thin-plate regression splines},
+  journal = {Journal of the Royal Statistical Society (B)},
+  volume = {65},
+  number = {1},
+  pages = {95-114},
+  year = {2003},
+  author = {S. N. Wood},
+}
+
+@Book{plotly2020,
+  author = {Carson Sievert},
+  title = {Interactive Web-Based Data Visualization with R, plotly, and shiny},
+  publisher = {Chapman and Hall/CRC},
+  year = {2020},
+  isbn = {9781138331457},
+  url = {https://plotly-r.com},
 }
 
 @Book{rmarkdown2018,

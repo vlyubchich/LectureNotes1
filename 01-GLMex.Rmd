@@ -5,6 +5,8 @@ editor_options:
 ---
 ## Data example
 
+Load needed packages: dplyr [@R-dplyr], etc.
+
 ```{r}
 library(dplyr)
 library(GGally)
